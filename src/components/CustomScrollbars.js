@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Scrollbars } from 'react-custom-scrollbars';
+import { Scrollbar } from 'react-scrollbars-custom';
 
 import './CustomScrollbars.scss';
 
@@ -86,7 +86,7 @@ class CustomScrollbars extends Component {
     render() {
         const { className, disableVerticalScroll, disableHorizontalScroll, children,...otherProps } = this.props;
         return (
-            <Scrollbars
+            <Scrollbar
                 ref={this.ref}
                 autoHide={true}
                 autoHideTimeout={200}
@@ -99,7 +99,7 @@ class CustomScrollbars extends Component {
                 renderThumbVertical={disableVerticalScroll ? this.renderNone : this.renderThumbVertical}
             >
                 {children}
-            </Scrollbars>
+            </Scrollbar>
         );
     }
 }

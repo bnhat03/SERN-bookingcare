@@ -7,6 +7,8 @@ import App from './containers/App';
 import * as serviceWorker from './serviceWorker';
 import IntlProviderWrapper from "./hoc/IntlProviderWrapper";
 
+// import 'font-awesome/css/font-awesome.min.css'; // video 60
+
 
 import { Provider } from 'react-redux';
 import reduxStore, { persistor } from './redux';
