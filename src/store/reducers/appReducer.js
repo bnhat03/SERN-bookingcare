@@ -31,6 +31,13 @@ const appReducer = (state = initialState, action) => {
                     ...action.contentOfConfirmModal
                 }
             }
+
+        // video 58: Change language VN/EN
+        case actionTypes.CHANGE_LANGUAGE: 
+            return {
+                ...state,
+                language: action.language
+            }
         default:
             return state;
     }
