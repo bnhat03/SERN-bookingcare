@@ -2,6 +2,11 @@
     height: 60px;
     width: 100%;
     padding: 0 40px;
+    // sticky header
+    position: sticky;
+    top: 0;
+    background-color: white;
+    z-index: 10000;
 
     .home-header-content {
         width: 100%;
@@ -97,7 +102,7 @@
     flex-direction: column;
 
     .content-up {
-        background-image: linear-gradient(rgba(126, 126, 126, 0.25), rgba(255, 255, 255, 0.1));
+        background-image: linear-gradient(rgba(126, 126, 126, 0.25), rgba(255, 255, 255, 0.05));
         padding-top: 15px;
         height: 65%;
 
