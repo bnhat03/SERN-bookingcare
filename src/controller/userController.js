@@ -16,7 +16,7 @@
 //             })
 //         }
 //         else {
-//             let data = await userAPIService.getAllUser();
+//             let data = await userAPIService.getAllUsers();
 //             return res.status(200).json({
 //                 EM: data.EM,
 //                 EC: data.EC,

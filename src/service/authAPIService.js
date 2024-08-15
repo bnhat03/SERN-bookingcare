@@ -91,7 +91,7 @@ const handleUserLogin = async (rawData) => {
             where: {
                 email: rawData.email
             },
-            // attributes: ["id", "username", "email"],
+            attributes: ["email", 'roleId', 'firstName', 'lastName'],
             raw: true,
 
         })

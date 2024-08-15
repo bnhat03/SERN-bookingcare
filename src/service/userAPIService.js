@@ -2,7 +2,7 @@
 import db from "../models";
 import { hashUserPassword, checkEmailExist, checkPhoneExist } from "./authAPIService"
 
-const getAllUser = async () => {
+const getAllUsers = async () => {
     try {
         let users = await db.User.findAll({
             attributes: ["id", "username", "email", "phone", "sex"],
@@ -172,7 +172,7 @@ const deleteUser = async (userId) => {
 }
 
 module.exports = {
-    getAllUser,
+    getAllUsers,
     createNewUser,
     updateUser,
     deleteUser,
