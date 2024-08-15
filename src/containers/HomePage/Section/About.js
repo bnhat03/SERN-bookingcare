@@ -17,10 +17,10 @@ class About extends Component {
                             height="400px"
                             src="https://www.youtube.com/embed/s7BYsMkRpjM"
                             title="Aziz Hedra - Somebody&#39;s Pleasure (Official Lyric Video)"
-                            frameborder="0"
+                            frameBorder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                             referrerpolicy="strict-origin-when-cross-origin"
-                            allowfullscreen>
+                            allowFullScreen>
                         </iframe>
                     </div>
                     <div className='content-right'>
