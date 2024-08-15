@@ -8,9 +8,6 @@ import configCORS from "./config/cors";
 import bodyParse from 'body-parser'
 import cookieParser from "cookie-parser";
 
-// test JWT
-// import {createJWT, verifyToken} from './middleware/JWTAction';
-
 const app = express();
 const PORT = process.env.PORT || 8080
 const REACT_URL = process.env.REACT_URL || '*'
@@ -32,13 +29,7 @@ app.use(cookieParser());
 //test connection db
 connection();
 
-// test JWT
-// createJWT();
-// let decodedData = verifyToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQmllbiBWYW4gTmhhdCIsImFkZHJlc3MiOiJIYSBUaW5oIiwiaWF0IjoxNzIyMDUyNTQzfQ.apahapEIOEJlFOB_HQUs14NfQHe9IU_xWZAy7BjbqxM");
-// console.log(decodedData);
-
-// init web routes, api routes
-initWebRouters(app);
+// initWebRouters(app);
 initApiRouters(app);
 
 app.listen(PORT, () => {

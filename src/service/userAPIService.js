@@ -1,6 +1,6 @@
 // Mục đích: API users
 import db from "../models";
-import { hashUserPassword, checkEmailExist, checkPhoneExist } from "./loginRegisterService"
+import { hashUserPassword, checkEmailExist, checkPhoneExist } from "./authAPIService"
 
 const getAllUser = async () => {
     try {

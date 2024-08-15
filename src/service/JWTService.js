@@ -1,18 +1,18 @@
-import db from "../models";
+// import db from "../models";
 
-const getGroupWithRoles = async (user) => {
-    let roles = await db.Group.findOne({
-        where: {id: user.groupId},
-        attributes: ["id", "name", "description"],
-        include: {
-            model: db.Role,
-            attributes: ["id", "url", "description"],
-            through: {attributes: []}  // -> Bỏ mapping đến bảng ở giữa (Đã note ở word)
-        }
-    })
-    return roles ? roles : {};
-}
-module.exports = {
-    getGroupWithRoles,
+// const getGroupWithRoles = async (user) => {
+//     let roles = await db.Group.findOne({
+//         where: {id: user.groupId},
+//         attributes: ["id", "name", "description"],
+//         include: {
+//             model: db.Role,
+//             attributes: ["id", "url", "description"],
+//             through: {attributes: []}  // -> Bỏ mapping đến bảng ở giữa (Đã note ở word)
+//         }
+//     })
+//     return roles ? roles : {};
+// }
+// module.exports = {
+//     getGroupWithRoles,
     
-}
+// }

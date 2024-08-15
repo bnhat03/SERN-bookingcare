@@ -2,12 +2,9 @@
   "development": {
     "username": "root",
     "password": null,
-    "database": "jwt",
+    "database": "sern",
     "host": "127.0.0.1",
     "dialect": "mysql",
-    "define": {
-      "freezeTableName": true
-    },
     "logging": false
   },
   "test": {

@@ -2,10 +2,10 @@
 
 import db from "../models"
 import bcrypt from 'bcryptjs' // hash password
-import {Op} from 'sequelize'
+import { Op } from 'sequelize'
 require("dotenv").config();
-import {getGroupWithRoles} from './JWTService'
-import { createJWT } from '../middleware/JWTAction'
+// import { getGroupWithRoles } from './JWTService'
+// import { createJWT } from '../middleware/JWTAction'
 
 const salt = bcrypt.genSaltSync(10);
 
@@ -79,49 +79,39 @@ const registerNewUser = async (rawUserData) => { // rawUserData: req.body => obj
 
 const handleUserLogin = async (rawData) => {
     try {
-        // check email/phone exist
+        // check email exist
+        if (!rawData.email || !rawData.password) {
+            return {
+                EM: 'Missing input!',
+                EC: `0`,
+                DT: ''
+            }
+        }
         let user = await db.User.findOne({
             where: {
-                [Op.or] : [
-                    {email: rawData.valueLogin},  // SELECT FROM WHERE OR
-                    {phone: rawData.valueLogin}
-                ]
-            }
+                email: rawData.email
+            },
+            // attributes: ["id", "username", "email"],
+            raw: true,
+
         })
-        if(user) { 
-            let isCorrectPassword = checkPassword(rawData.password, user.password);
+        if (user) {
+            // let isCorrectPassword = checkPassword(rawData.password, user.password);
+            let isCorrectPassword = '123456' == rawData.password;
             if (isCorrectPassword) { // check correct password
-                let groupWithRoles = await getGroupWithRoles(user); 
-                    // Lấy ra group tương ứng của user và roles 
-                        // roles: Mảng chứa các phần tử object
-                            // Mỗi element Obj là một role tự động được mapping qua table Role qua bảng trung gian => code tự động
-                        // Có thể chọn các attribute tùy ý
-                        // Đã note ở word
-                
-                let payload = {
-                    email: user.email, 
-                    groupWithRoles,
-                    username: user.username,
-                }
-                let token = createJWT(payload);
                 return {
                     EM: 'Login successfully!',
                     EC: 0,
-                    DT: {
-                        access_token: token,
-                        groupWithRoles,
-                        email: user.email,
-                        username: user.username
-                    }    
+                    DT: user
                 }
-            }            
-        } 
+            }
+        }
         return {
             EM: 'Your email/phone number or password is incorrect!',
             EC: 1,
             DT: ''
         }
-        
+
     } catch (error) {
         console.log(error);
         return {
@@ -138,5 +128,5 @@ module.exports = {
     hashUserPassword,
     checkEmailExist,
     checkPhoneExist
-    
+
 }

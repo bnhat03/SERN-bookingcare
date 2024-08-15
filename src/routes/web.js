@@ -1,6 +1,6 @@
 import express from "express"
 import homeController from "../controller/homeController"
-import apiController from "../controller/apiController"
+import authController from "../controller/authController"
 const router = express.Router();
 
 /**
@@ -16,12 +16,6 @@ const initWebRouters = (app) => {
     router.post("/update-user/:id", homeController.getUpdateUserPage) // Chuyển hướng trang khi edit
     router.post("/users/update-user", homeController.handleUpdateUser) // Lấy dữ liệu từ form ở trang khác
 
-    // REST api
-    // GET - R
-    // POST - C
-    // PUT - U
-    // DELETE - D
-    router.get("/api/test-api", apiController.testApi);
     app.use("/", router);
 }
 export default initWebRouters;
