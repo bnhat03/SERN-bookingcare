@@ -1,5 +1,5 @@
-// // API users
-// import userAPIService from '../service/userAPIService'
+// API users
+import userAPIService from '../service/userAPIService'
 
 
 // const readFunc = async (req, res) => {
@@ -33,25 +33,25 @@
 //     }
 // }
 // // modal create user
-// const createFunc = async (req, res) => {
-//     try {
-//         // Chưa validate ??? => Trùng email, phone
+const createFunc = async (req, res) => {
+    try {
+        // Chưa validate ??? => Trùng email, phone
 
-//         let data = await userAPIService.createNewUser(req.body);
-//         return res.status(200).json({
-//             EM: data.EM,
-//             EC: data.EC,
-//             DT: data.DT
-//         })
-//     } catch (error) {
-//         console.log(error);
-//         return res.status(500).json({
-//             EM: 'error from server',
-//             EC: '-1',
-//             DT: ''
-//         })
-//     }
-// }
+        let data = await userAPIService.createNewUser(req.body);
+        return res.status(200).json({
+            EM: data.EM,
+            EC: data.EC,
+            DT: data.DT
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            EM: 'error from server',
+            EC: '-1',
+            DT: ''
+        })
+    }
+}
 // const updateFunc = async (req, res) => {
 //     try {
 //         let data = await userAPIService.updateUser(req.body);
@@ -102,6 +102,10 @@
 // }
 
 
-// module.exports = {
-//     readFunc, createFunc, updateFunc, deleteFunc, getUserAccount
-// }
+module.exports = {
+    createFunc,
+    // readFunc, 
+    // updateFunc, 
+    // deleteFunc, 
+    // getUserAccount
+}

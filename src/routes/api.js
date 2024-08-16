@@ -18,11 +18,11 @@ const initApiRouters = (app) => {
     router.post("/logout", authController.handleLogout);
 
     // allcode
-    router.get("/allcode", allcodeController.getAllCodes); 
+    router.get("/allcode", allcodeController.getAllCodes);
 
-    // // user routes
+    // user routes
     // router.get("/user/read", userController.readFunc)
-    // router.post("/user/create", userController.createFunc)
+    router.post("/user/create", userController.createFunc)
     // router.put("/user/update", userController.updateFunc)
     // router.delete("/user/delete", userController.deleteFunc)
 

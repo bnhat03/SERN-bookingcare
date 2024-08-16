@@ -30,40 +30,8 @@ const getAllUsers = async () => {
         }
     }
 }
-const getUserWithPagination = async (page, limit) => {
-    try {
-        let offset = (page - 1) * limit;
-        const { count, rows } = await db.User.findAndCountAll({
-            //count: Số record
-            // rows: array chứa các record
-            offset: offset,
-            limit: limit,
-            attributes: ["id", "username", "email", "phone", "sex", "address"],
-            include: { model: db.Group, attributes: ["name", "description", "id"] },
-            order: [['id', 'DESC']] // Sắp xếp dưới lên => Xem create new user
-        })
-        let totalPages = Math.ceil(count / limit);
-        let data = {
-            totalRows: count,
-            totalPages: totalPages,
-            users: rows
-        }
-        return {
-            EM: 'fetch ok!',
-            EC: 0,
-            DT: data
-        }
-    } catch (error) {
-        console.log(error);
-        return {
-            EM: 'something wrongs with service!',
-            EC: 1,
-            DT: []
-        }
-    }
-}
 
-// modal create
+// Create
 const createNewUser = async (rawUserData) => {
     try {
         // check email/phonenumber are exist 
@@ -72,15 +40,7 @@ const createNewUser = async (rawUserData) => {
             return {
                 EM: 'The email is already exist',
                 EC: 1,
-                DT: 'email' // Gửi về FE để hiện viền đỏ
-            }
-        }
-        let isPhoneExist = await checkPhoneExist(rawUserData.phone);
-        if (isPhoneExist === true) {
-            return {
-                EM: 'The phone number is already exist',
-                EC: 1,
-                DT: 'phone'
+                DT: '' 
             }
         }
         //hash user password
@@ -172,10 +132,10 @@ const deleteUser = async (userId) => {
 }
 
 module.exports = {
-    getAllUsers,
     createNewUser,
-    updateUser,
-    deleteUser,
-    getUserWithPagination,
+    // getAllUsers,
+    // updateUser,
+    // deleteUser,
+    // getUserWithPagination,
 
 }
