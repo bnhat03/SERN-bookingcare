@@ -10,9 +10,16 @@ const handleLoginAPI = (userEmail, userPassword) => {
         }
     });
 }
+const getAllCodesService = (typeInput) => {
+    return axios({ 
+        method: 'get',
+        url: `/api/v1/allcode?type=${typeInput}`
+    });
+}
+
 export {
     handleLoginAPI,
-    
+    getAllCodesService,
 }
 
 
