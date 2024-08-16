@@ -40,6 +40,15 @@ const deleteUserService = (userId) => {
         }
     });
 }
+const updateUserService = (user) => {
+    return axios({
+        method: 'put',
+        url: '/api/v1/user/update',
+        data: {
+            ...user
+        }
+    });
+}
 
 export {
     handleLoginAPI,
@@ -47,7 +56,7 @@ export {
     createNewUserService,
     getAllUsers,
     deleteUserService,
-
+    updateUserService,
 }
 
 

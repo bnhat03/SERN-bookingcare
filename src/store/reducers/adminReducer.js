@@ -79,8 +79,22 @@ const adminReducer = (state = initialState, action) => {
             return {
                 ...state,
             }    
+        //user: update
+        case actionTypes.UPDATE_USER_SUCCESS:
+            return {
+                ...state,
+            }
+        case actionTypes.UPDATE_USER_FAILED:
+            return {
+                ...state,
+            }   
         default:
             return state;
+        //Note cuối:
+            // 1. Có isLoading thì các CASE trên mới bổ ích (Thay đổi state)
+                // Ví dụ GENDER có isLOADING => Phát huy hết khả năng của các CASE này
+            // 2. FETCH data (READ) => Thay đổi state Redux => FETCH sau mỗi lần CREATE, DELETE, UPDATE
+            // 3. DETELE, UPDATE, CREATE => Không thay đổi state Redux => Có thể ko cần viết CASE trong Reducer ni
     }
 }
 
