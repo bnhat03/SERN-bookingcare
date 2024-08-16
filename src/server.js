@@ -20,8 +20,10 @@ configCORS(app);
 configViewEngine(app);
 
 // config body-parser
-app.use(bodyParse.json())
-app.use(bodyParse.urlencoded({extended: true}))
+// app.use(bodyParse.json())
+// app.use(bodyParse.urlencoded({extended: true}))
+app.use(bodyParse.json({ limit: '50mb' }))
+app.use(bodyParse.urlencoded({ imit: '50mb', extended: true }))
 
 // config cookie-parser
 app.use(cookieParser());

@@ -46,7 +46,11 @@ const createNewUser = async (rawUserData) => {
         }
         //hash user password
         let hashPassword = hashUserPassword(rawUserData.password);
-        await db.User.create({ ...rawUserData, password: hashPassword }) // rawUserData: Object
+        await db.User.create({
+            ...rawUserData,
+            password: hashPassword,
+            image: rawUserData.avatar
+        }) // rawUserData: Object
         return {
             EM: 'create a new user ok!',
             EC: 0,
@@ -74,15 +78,17 @@ const updateUser = async (data) => {
             where: { id: data.id }
         })
         if (user) {
-            await user.update({
-                firstName: data.firstName,
-                lastName: data.lastName,
-                address: data.address,
-                phonenumber: data.phonenumber,
-                gender: data.gender,
-                roleId: data.roleId,
-                positionId: data.positionId,
-            })
+            user.firstName = data.firstName;
+            user.lastName = data.lastName;
+            user.address = data.address;
+            user.phonenumber = data.phonenumber;
+            user.gender = data.gender;
+            user.roleId = data.roleId;
+            user.positionId = data.positionId;
+            if (data.avatar) { // Nếu nhấn thay đổi file avatar ở React (Ko thì giữ nguyên image này)
+                user.image = data.avatar;
+            }
+            await user.save();
             return {
                 EM: 'update user succeeds!',
                 EC: 0,
