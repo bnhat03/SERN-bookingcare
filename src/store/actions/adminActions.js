@@ -81,6 +81,7 @@ export const fetchRoleFailed = () => ({
 export const createNewUser = (data) => {
     return async (dispatch, getState) => {
         try {
+            console.log(">>>check data" , data);
             let res = await createNewUserService(data);
             if (res && res.EC === 0) {
                 toast.success(res.EM);
