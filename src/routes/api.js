@@ -21,10 +21,10 @@ const initApiRouters = (app) => {
     router.get("/allcode", allcodeController.getAllCodes);
 
     // user routes
-    // router.get("/user/read", userController.readFunc)
+    router.get("/user/read", userController.readFunc)
     router.post("/user/create", userController.createFunc)
     // router.put("/user/update", userController.updateFunc)
-    // router.delete("/user/delete", userController.deleteFunc)
+    router.delete("/user/delete", userController.deleteFunc)
 
     // // role routes
     // router.get("/role/read", roleController.readFunc)

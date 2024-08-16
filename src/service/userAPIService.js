@@ -5,8 +5,9 @@ import { hashUserPassword, checkEmailExist, checkPhoneExist } from "./authAPISer
 const getAllUsers = async () => {
     try {
         let users = await db.User.findAll({
-            attributes: ["id", "username", "email", "phone", "sex"],
-            include: { model: db.Group, attributes: ["name", "description"] },
+            attributes: {
+                exclude: ['password']
+            }
         })
         if (users) {
             return {
@@ -133,9 +134,9 @@ const deleteUser = async (userId) => {
 
 module.exports = {
     createNewUser,
-    // getAllUsers,
+    getAllUsers,
     // updateUser,
-    // deleteUser,
+    deleteUser,
     // getUserWithPagination,
 
 }
