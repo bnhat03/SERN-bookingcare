@@ -4,7 +4,8 @@ const initialState = {
     genders: [],
     isLoadingGender: false, // Chỉ làm loading GENDER thôi
     roles: [],
-    positions: []
+    positions: [],
+    users: [],
 }
 
 const adminReducer = (state = initialState, action) => {
@@ -50,7 +51,34 @@ const adminReducer = (state = initialState, action) => {
                 ...state,
             }
         //user: create
-
+        case actionTypes.CREATE_USER_SUCCESS:
+            return {
+                ...state,
+            }
+        case actionTypes.CREATE_USER_FAILED:
+            return {
+                ...state,
+            }
+        //user: fetch all users
+        case actionTypes.FETCH_ALL_USERS_SUCCESS:
+            state.users = action.users
+            return {
+                ...state,
+            }
+        case actionTypes.FETCH_ALL_USERS_FAILED:
+            state.users = [];
+            return {
+                ...state,
+            }
+        //user: delete
+        case actionTypes.DELETE_USER_SUCCESS:
+            return {
+                ...state,
+            }
+        case actionTypes.DELETE_USER_FAILED:
+            return {
+                ...state,
+            }    
         default:
             return state;
     }

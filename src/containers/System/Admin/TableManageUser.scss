@@ -1,0 +1,19 @@
+.table-manage-user {
+    .btn-edit {
+        margin-right: 20px;
+        border: none;
+        background: none;
+        outline: none;
+        i {
+            color: orange;
+        }
+    }
+    .btn-delete {
+        border: none;
+        background: none;
+        outline: none;
+        i {
+            color: green;
+        }
+    }
+}

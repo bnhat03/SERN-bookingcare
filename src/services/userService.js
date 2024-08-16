@@ -25,11 +25,28 @@ const createNewUserService = (dataUser) => {
         }
     });
 }
+const getAllUsers= () => {
+    return axios({
+        method: 'get',
+        url: `/api/v1/user/read`
+    });
+}
+const deleteUserService = (userId) => {
+    return axios({
+        method: 'delete',
+        url: '/api/v1/user/delete',
+        data: {
+            id: userId
+        }
+    });
+}
 
 export {
     handleLoginAPI,
     getAllCodesService,
     createNewUserService,
+    getAllUsers,
+    deleteUserService,
 
 }
 
