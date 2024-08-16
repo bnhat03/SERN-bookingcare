@@ -41,7 +41,7 @@ const createNewUser = async (rawUserData) => {
             return {
                 EM: 'The email is already exist',
                 EC: 1,
-                DT: '' 
+                DT: ''
             }
         }
         //hash user password
@@ -63,11 +63,11 @@ const createNewUser = async (rawUserData) => {
 }
 const updateUser = async (data) => {
     try {
-        if (!data.groupId) { // Chưa hiểu check ni lắm vì luôn có groupId rồi mà
+        if (!data.id || !data.roleId || !data.positionId || !data.gender) {
             return {
-                EM: 'error with empty GroupId!',
-                EC: 1,
-                DT: 'group' // Hiện viền đỏ
+                EM: 'Missing required parameters!',
+                EC: 2,
+                DT: ''
             }
         }
         let user = await db.User.findOne({
@@ -75,10 +75,13 @@ const updateUser = async (data) => {
         })
         if (user) {
             await user.update({
-                username: data.username,
+                firstName: data.firstName,
+                lastName: data.lastName,
                 address: data.address,
-                sex: data.sex,
-                groupId: data.groupId,
+                phonenumber: data.phonenumber,
+                gender: data.gender,
+                roleId: data.roleId,
+                positionId: data.positionId,
             })
             return {
                 EM: 'update user succeeds!',
@@ -135,7 +138,7 @@ const deleteUser = async (userId) => {
 module.exports = {
     createNewUser,
     getAllUsers,
-    // updateUser,
+    updateUser,
     deleteUser,
     // getUserWithPagination,
 
