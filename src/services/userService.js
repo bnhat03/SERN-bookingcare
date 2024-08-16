@@ -11,15 +11,26 @@ const handleLoginAPI = (userEmail, userPassword) => {
     });
 }
 const getAllCodesService = (typeInput) => {
-    return axios({ 
+    return axios({
         method: 'get',
         url: `/api/v1/allcode?type=${typeInput}`
+    });
+}
+const createNewUserService = (dataUser) => {
+    return axios({
+        method: 'post',
+        url: '/api/v1/user/create',
+        data: {
+            ...dataUser
+        }
     });
 }
 
 export {
     handleLoginAPI,
     getAllCodesService,
+    createNewUserService,
+
 }
 
 

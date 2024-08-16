@@ -16,12 +16,14 @@ const actionTypes = Object.freeze({
     //position
     FETCH_POSITION_SUCCESS: 'FETCH_POSITION_SUCCESS',
     FETCH_POSITION_FAILED: 'FETCH_POSITION_FAILED',
-    
+
     //role
     FETCH_ROLE_SUCCESS: 'FETCH_ROLE_SUCCESS',
     FETCH_ROLE_FAILED: 'FETCH_ROLE_FAILED',
 
-
+    // user
+    CREATE_USER_SUCCESS: 'CREATE_USER_SUCCESS',
+    CREATE_USER_FAILED: 'CREATE_USER_FAILED',
 })
 
 export default actionTypes;
