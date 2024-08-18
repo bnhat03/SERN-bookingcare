@@ -50,6 +50,13 @@ const updateUserService = (user) => {
     });
 }
 
+const getTopDoctorsHomeService = (limit) => {
+    return axios({
+        method: 'get',
+        url: `/api/v1/doctor/top-doctor-home?limit=${limit}`
+    });
+}
+
 export {
     handleLoginAPI,
     getAllCodesService,
@@ -57,6 +64,8 @@ export {
     getAllUsers,
     deleteUserService,
     updateUserService,
+    getTopDoctorsHomeService,
+
 }
 
 

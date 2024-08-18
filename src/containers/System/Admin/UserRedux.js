@@ -19,6 +19,7 @@ class UserRedux extends Component {
             roleArr: [],
             previewImgURL: '',
             // Link URL ảo (BLOB) => VD: blob:http://localhost:3000/c2e2d1df-5090-41cf-9026-a10aa4007a06
+            // Buffer.from(user.image, 'base64'); => cũng được luôn
             isOpen: false,
 
             // create
@@ -31,7 +32,7 @@ class UserRedux extends Component {
             gender: '',
             position: '',
             role: '',
-            avatar: '',
+            avatar: '', // base64
             // edit
             action: '',
             userEditId: '',
@@ -96,12 +97,19 @@ class UserRedux extends Component {
 
     handleOnchangeImage = async (event) => {
         let data = event.target.files;
+
         let file = data[0];
+        console.log(">>>file: ", file);
+
         if (file) {
             let base64 = await CommonUtils.getBase64(file);
+            console.log(">>>base64: ", base64);
+
             let objectUrl = URL.createObjectURL(file);
+            console.log(">>>objectUrl: ", objectUrl);
+
             this.setState({
-                previewImgURL: objectUrl,
+                previewImgURL: objectUrl, // URL ảo blob
                 avatar: base64
             })
         }
@@ -133,7 +141,7 @@ class UserRedux extends Component {
                 gender: this.state.gender,
                 positionId: this.state.position,
                 roleId: this.state.role,
-                avatar: this.state.avatar
+                avatar: this.state.avatar //base64
             })
         }
         if (action === CRUD_ACTIONS.EDIT) {
@@ -177,7 +185,10 @@ class UserRedux extends Component {
     handleEditUserFromParent = (user) => {
         let imageBase64 = ''; 
         if (user.image) {
-            imageBase64 = Buffer.from(user.image, 'base64').toString('binary');// convert ảnh sang base64
+            imageBase64 = Buffer.from(user.image, 'base64');
+                // column 'image' trong table user ở DB có type=LONG BLOB
+                    // React call API => field image này sẽ thành Buffer (Có note trong WORD)
+                // => Cần convert Buffer sang previewImgURL (url ảo, base64)=> Trong backgroundImage: url() của <div>
         }
         this.setState({
             email: user.email,
@@ -189,7 +200,8 @@ class UserRedux extends Component {
             gender: user.gender,
             position: user.positionId,
             role: user.roleId,
-            avatar: '',
+            avatar: '', // Set avatar = '' => Logic với code trong BE => Không nhấn thay đổi file image thì ko cần update lại column image
+                                                                    // Nếu nhấn thay đổi thì avatar sẽ thành base64 khác => Logic với BE luôn
             previewImgURL: imageBase64,
             action: CRUD_ACTIONS.EDIT,
             userEditId: user.id
@@ -380,7 +392,7 @@ class UserRedux extends Component {
                 {  // Hiển thị toàn màn hình Preview Image => Tự động hiện lên màn hình che hết mấy cấy khác như Modal => Cài đặt sẵn rồi cưng
                     this.state.isOpen === true &&
                     <Lightbox
-                        mainSrc={this.state.previewImgURL}  // base64
+                        mainSrc={this.state.previewImgURL}  // base64/URL blob
                         onCloseRequest={() => this.setState({ isOpen: false })}
                     />
                 }
