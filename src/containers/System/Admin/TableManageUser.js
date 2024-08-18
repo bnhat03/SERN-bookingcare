@@ -3,8 +3,17 @@ import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import './TableManageUser.scss'
 import * as actions from '../../../store/actions'
+// video 76: Markdown Editor
+import MarkdownIt from 'markdown-it';
+import MdEditor from 'react-markdown-editor-lite';
+import 'react-markdown-editor-lite/lib/index.css';
+// Initialize a markdown parser
+const mdParser = new MarkdownIt(/* Markdown-it options */);
 
-
+// Finish!
+function handleEditorChange({ html, text }) {
+    console.log('handleEditorChange', html, text);
+}
 
 class TableManageUser extends Component {
     constructor(props) {
@@ -35,46 +44,53 @@ class TableManageUser extends Component {
     render() {
         let arrUsers = this.state.usersRedux;
         return (
-            <table className="table table-bordered table-hover table-manage-user">
-                <thead>
-                    <tr>
-                        <th scope="col">Email</th>
-                        <th scope="col">First Name</th>
-                        <th scope="col">Last Name</th>
-                        <th scope="col">Address</th>
-                        <th scope="col">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        arrUsers && arrUsers.length > 0 &&
-                        arrUsers.map((item, index) => {
-                            return (
-                                <tr key={index}>
-                                    <td>{item.email}</td>
-                                    <td>{item.firstName}</td>
-                                    <td>{item.lastName}</td>
-                                    <td>{item.address}</td>
-                                    <td>
-                                        <button
-                                            className='btn-edit'
-                                            onClick={() => this.handleEditUser(item)}
-                                        >
-                                            <i className='fas fa-pencil-alt'></i>
-                                        </button>
-                                        <button
-                                            className='btn-delete'
-                                            onClick={() => this.handleDeleteUser(item)}
-                                        >
-                                            <i className='fas fa-trash'></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            )
-                        })
-                    }
-                </tbody>
-            </table>
+            <>
+                <table className="table table-bordered table-hover table-manage-user">
+                    <thead>
+                        <tr>
+                            <th scope="col">Email</th>
+                            <th scope="col">First Name</th>
+                            <th scope="col">Last Name</th>
+                            <th scope="col">Address</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            arrUsers && arrUsers.length > 0 &&
+                            arrUsers.map((item, index) => {
+                                return (
+                                    <tr key={index}>
+                                        <td>{item.email}</td>
+                                        <td>{item.firstName}</td>
+                                        <td>{item.lastName}</td>
+                                        <td>{item.address}</td>
+                                        <td>
+                                            <button
+                                                className='btn-edit'
+                                                onClick={() => this.handleEditUser(item)}
+                                            >
+                                                <i className='fas fa-pencil-alt'></i>
+                                            </button>
+                                            <button
+                                                className='btn-delete'
+                                                onClick={() => this.handleDeleteUser(item)}
+                                            >
+                                                <i className='fas fa-trash'></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                )
+                            })
+                        }
+                    </tbody>
+                </table>
+                <MdEditor
+                    style={{ height: '500px' }}
+                    renderHTML={text => mdParser.render(text)}
+                    onChange={handleEditorChange}
+                />
+            </>
         );
     }
 
