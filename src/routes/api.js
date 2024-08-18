@@ -3,7 +3,7 @@ import authController from "../controller/authController"
 import allcodeController from '../controller/allcodeController'
 import userController from "../controller/userController"
 import groupController from "../controller/groupController"
-import roleController from "../controller/roleController"
+import doctorController from "../controller/doctorController"
 import { checkUserJWT, checkUserPermission } from '../middleware/JWTAction'
 const router = express.Router();
 
@@ -26,8 +26,8 @@ const initApiRouters = (app) => {
     router.put("/user/update", userController.updateFunc)
     router.delete("/user/delete", userController.deleteFunc)
 
-    // // role routes
-    // router.get("/role/read", roleController.readFunc)
+    // doctor
+    router.get("/doctor/top-doctor-home", doctorController.getTopDoctorHome)
     // router.post("/role/create", roleController.createFunc)
     // router.put("/role/update", roleController.updateFunc)
     // router.delete("/role/delete", roleController.deleteFunc)

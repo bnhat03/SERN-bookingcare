@@ -7,3 +7,4 @@
 
 # Model: AllCode
     npx sequelize-cli model:generate --name AllCode --attributes type:string, keyMap:string, valueEn:string, valueVi:string
+
