@@ -71,6 +71,13 @@ const saveDetailDoctorService = (dataMd) => {
         }
     });
 }
+const getDetailInforDoctorService = (inputId) => { // id doctor
+    return axios({
+        method: 'get',
+        url: `/api/v1/doctor/get-detail-doctor-by-id?id=${inputId}`
+    });
+}
+
 export {
     handleLoginAPI,
     getAllCodesService,
@@ -81,6 +88,7 @@ export {
     getTopDoctorsHomeService,
     getAllDoctorsService,
     saveDetailDoctorService,
+    getDetailInforDoctorService,
 
 }
 
