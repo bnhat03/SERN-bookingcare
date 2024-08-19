@@ -25,7 +25,7 @@ const createNewUserService = (dataUser) => {
         }
     });
 }
-const getAllUsers= () => {
+const getAllUsers = () => {
     return axios({
         method: 'get',
         url: `/api/v1/user/read`
@@ -56,7 +56,21 @@ const getTopDoctorsHomeService = (limit) => {
         url: `/api/v1/doctor/top-doctor-home?limit=${limit}`
     });
 }
-
+const getAllDoctorsService = () => {
+    return axios({
+        method: 'get',
+        url: `/api/v1/doctor/get-all-doctors`
+    });
+}
+const saveDetailDoctorService = (dataMd) => {
+    return axios({
+        method: 'post',
+        url: '/api/v1/doctor/save-infor-doctors',
+        data: {
+            ...dataMd
+        }
+    });
+}
 export {
     handleLoginAPI,
     getAllCodesService,
@@ -65,6 +79,8 @@ export {
     deleteUserService,
     updateUserService,
     getTopDoctorsHomeService,
+    getAllDoctorsService,
+    saveDetailDoctorService,
 
 }
 

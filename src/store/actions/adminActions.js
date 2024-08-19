@@ -1,5 +1,6 @@
 import actionTypes from './actionTypes';
-import { getAllCodesService, createNewUserService, getAllUsers, deleteUserService, updateUserService, getTopDoctorsHomeService } from '../../services/userService';
+import { getAllCodesService, createNewUserService, getAllUsers, deleteUserService, updateUserService, 
+    getTopDoctorsHomeService, getAllDoctorsService, saveDetailDoctorService } from '../../services/userService';
 import { toast } from 'react-toastify';
 // GENDER
 export const fetchGenderStart = () => { // call API
@@ -187,7 +188,7 @@ export const updateUserFailed = () => ({
     type: actionTypes.UPDATE_USER_FAILED
 })
 
-// Outstanding Doctor
+// Doctor
 export const fetchTopDoctors = () => {
     return async (dispatch, getState) => {
         try {
@@ -211,3 +212,52 @@ export const fetchTopDoctors = () => {
         }
     }
 }
+
+export const fetchAllDoctors = () => {
+    return async (dispatch, getState) => {
+        try {
+            let res = await getAllDoctorsService();
+            if (res && res.EC === 0) {
+                dispatch({
+                    type: actionTypes.FETCH_ALL_DOCTORS_SUCCESS,
+                    dataDoctors: res.DT
+                })
+            }
+            else {
+                dispatch({
+                    type: actionTypes.FETCH_ALL_DOCTORS_FAILED
+                })
+            }
+        } catch (error) {
+            console.log(error);
+            dispatch({
+                type: actionTypes.FETCH_ALL_DOCTORS_FAILED
+            })
+        }
+    }
+}
+// Save infor Markdown
+export const saveDetailDoctor = (dataMd) => {
+    return async (dispatch, getState) => {
+        try {
+            let res = await saveDetailDoctorService(dataMd);
+            if (res && res.EC === 0) {
+                dispatch({
+                    type: actionTypes.SAVE_DETAIL_DOCTOR_SUCCESS,
+                })
+                toast.success(res.EM);
+            }
+            else {
+                dispatch({
+                    type: actionTypes.SAVE_DETAIL_DOCTOR_FAILED
+                })
+            }
+        } catch (error) {
+            console.log(error);
+            dispatch({
+                type: actionTypes.SAVE_DETAIL_DOCTOR_FAILED
+            })
+        }
+    }
+}
+
