@@ -66,7 +66,7 @@ const getAllDoctors = async () => {
 }
 const saveDetailInforDoctor = async (inputDataMd) => { // create data markdown & HTML doctor
     try {
-        if (!inputDataMd || !inputDataMd.contentHTML || !inputDataMd.contentMarkdown) {
+        if (!inputDataMd || !inputDataMd.contentHTML || !inputDataMd.contentMarkdown || !inputDataMd.action) {
             return {
                 EM: 'Missing params!',
                 EC: 1,
@@ -74,16 +74,30 @@ const saveDetailInforDoctor = async (inputDataMd) => { // create data markdown &
             }
         }
         else {
-            await db.Markdown.create({
-                contentHTML: inputDataMd.contentHTML,
-                contentMarkdown: inputDataMd.contentMarkdown,
-                description: inputDataMd.description,
-                doctorId: inputDataMd.doctorId,
-            })
+            if (inputDataMd.action === "CREATE") {
+                await db.Markdown.create({
+                    contentHTML: inputDataMd.contentHTML,
+                    contentMarkdown: inputDataMd.contentMarkdown,
+                    description: inputDataMd.description,
+                    doctorId: inputDataMd.doctorId,
+                })
+            } else if (inputDataMd.action === "EDIT") {
+                // sequelize update
+                let doctorMarkdown = await db.Markdown.findOne({
+                    where: { doctorId: inputDataMd.doctorId },
+                    raw: false,
+                })
+                if (doctorMarkdown) {
+                    doctorMarkdown.contentHTML = inputDataMd.contentHTML;
+                    doctorMarkdown.contentMarkdown = inputDataMd.contentMarkdown;
+                    doctorMarkdown.description = inputDataMd.description;
+                    await doctorMarkdown.save();
+                }
+            }
             return {
-                EM: 'Save information doctoc successfully.',
+                EM: 'Save information doctor successfully.',
                 EC: 0,
-                DT: doctors
+                DT: ''
             }
         }
     } catch (error) {
@@ -119,12 +133,9 @@ let getDetailDoctorById = async (inputId) => { // inputId: doctorId
                 raw: false, // Giữ nguyên sequelize object
                 nest: true
             })
-            let imageBase64 = '';
             if (doctor && doctor.image) {
-                imageBase64 = Buffer(doctor.image, 'base64').toString('binary'); // Convert BLOB => Buffer => base64 trước khi res -> React
+                doctor.image = Buffer(doctor.image, 'base64').toString('binary'); // Convert BLOB => Buffer => base64 trước khi res -> React
             }
-            doctor.image = imageBase64;
-            console.log(doctor.image);
             if (!doctor) doctor = {}
             return {
                 EM: 'Find this doctor succeed!',
