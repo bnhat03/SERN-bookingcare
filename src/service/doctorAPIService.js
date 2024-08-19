@@ -95,12 +95,50 @@ const saveDetailInforDoctor = async (inputDataMd) => { // create data markdown &
         }
     }
 }
-
+let getDetailDoctorById = async (inputId) => { // inputId: doctorId
+    try {
+        if (!inputId) {
+            return {
+                EM: 'Missing required parameter!',
+                EC: 1,
+                DT: [],
+            }
+        }
+        else {
+            let doctor = await db.User.findOne({
+                where: {
+                    id: inputId
+                },
+                attributes: {
+                    exclude: ['password', 'image']
+                },
+                include: [
+                    { model: db.Markdown, attributes: ['contentHTML', 'contentMarkdown', 'description'] }, // FK
+                    { model: db.AllCode, as: 'positionData', attributes: ['valueEn', 'valueVi'] } // PK
+                ],
+                raw: true,
+                nest: true
+            })
+            return {
+                EM: 'Find this doctor succeed!',
+                EC: 0,
+                DT: doctor
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        return {
+            EM: 'something wrongs with service!',
+            EC: 1,
+            DT: []
+        }
+    }
+}
 
 
 module.exports = {
     getTopDoctorHome,
     getAllDoctors,
     saveDetailInforDoctor,
-
+    getDetailDoctorById,
 }

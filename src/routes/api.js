@@ -30,6 +30,7 @@ const initApiRouters = (app) => {
     router.get("/doctor/top-doctor-home", doctorController.getTopDoctorHome);
     router.get("/doctor/get-all-doctors", doctorController.getAllDoctors);
     router.post("/doctor/save-infor-doctors", doctorController.postInforDoctor);
+    router.get("/doctor/get-detail-doctor-by-id", doctorController.getDetailDoctorById);
     // router.post("/role/create", roleController.createFunc)
     // router.put("/role/update", roleController.updateFunc)
     // router.delete("/role/delete", roleController.deleteFunc)
