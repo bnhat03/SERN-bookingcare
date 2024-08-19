@@ -60,7 +60,7 @@ const postInforDoctor = async (req, res) => {
 }
 const getDetailDoctorById = async (req, res) => {
     try {
-        let infor = await doctorAPIService.getDetailDoctorById(req.body.id);
+        let infor = await doctorAPIService.getDetailDoctorById(req.query.id);
         return res.status(200).json({
             EM: infor.EM,
             EC: infor.EC,
@@ -117,7 +117,7 @@ const updateFunc = async (req, res) => {
 }
 const deleteFunc = async (req, res) => {
     try {
-        let data = await userAPIService.deleteUser(req.body.id);
+        let data = await userAPIService.deleteUser(req.query.id);
         return res.status(200).json({
             EM: data.EM,
             EC: data.EC,

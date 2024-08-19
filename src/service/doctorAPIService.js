@@ -1,6 +1,6 @@
 // Mục đích: API users
 import db from "../models";
-
+import { Buffer } from 'buffer';
 const getTopDoctorHome = async (limitInput) => { // Lấy list limit Doctor tạo sau cùng
     try {
         let doctors = await db.User.findAll({
@@ -110,15 +110,22 @@ let getDetailDoctorById = async (inputId) => { // inputId: doctorId
                     id: inputId
                 },
                 attributes: {
-                    exclude: ['password', 'image']
+                    exclude: ['password']
                 },
                 include: [
                     { model: db.Markdown, attributes: ['contentHTML', 'contentMarkdown', 'description'] }, // FK
                     { model: db.AllCode, as: 'positionData', attributes: ['valueEn', 'valueVi'] } // PK
                 ],
-                raw: true,
+                raw: false, // Giữ nguyên sequelize object
                 nest: true
             })
+            let imageBase64 = '';
+            if (doctor && doctor.image) {
+                imageBase64 = Buffer(doctor.image, 'base64').toString('binary'); // Convert BLOB => Buffer => base64 trước khi res -> React
+            }
+            doctor.image = imageBase64;
+            console.log(doctor.image);
+            if (!doctor) doctor = {}
             return {
                 EM: 'Find this doctor succeed!',
                 EC: 0,
