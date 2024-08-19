@@ -12,7 +12,7 @@ export const adminMenu = [
                 name: 'menu.admin.manage-doctor', link: '/system/manage-doctor'
             }, 
             {
-                name: 'menu.admin.manage-admin', link: '/system/user-admin'
+                name: 'menu.doctor.manage-schedule', link: '/doctor/manage-schedule' // Quản lý lịch khám bệnh của bác sĩ => Admin + Doctor có chức năng ni
             }, 
                 
         ]
@@ -42,6 +42,18 @@ export const adminMenu = [
                 name: 'menu.admin.manage-handbook', link: '/system/manage-handbook' // CRUD User theo state của React (chưa dùng Redux)
             }, 
 
+        ]
+    }, 
+];
+
+export const doctorMenu = [
+    { 
+        name: 'menu.admin.manage-user', 
+        menus: [
+            { // Quản lý lịch khám bệnh của bác sĩ => Admin + Doctor có chức năng ni
+                name: 'menu.doctor.manage-schedule', link: '/doctor/manage-schedule' 
+            }, 
+                
         ]
     }, 
 ];
