@@ -10,6 +10,12 @@ class HomeHeader extends Component {
     changeLanguage = (language) => { // event handler
         this.props.changeLanguageAppRedux(language); // dispatch
     }
+    returnToHome = () => {
+        if (this.props.history) {
+            this.props.history.push('/home');
+        }
+    }
+
     render() {
         let language = this.props.language;
         return (
@@ -18,7 +24,7 @@ class HomeHeader extends Component {
                     <div className='home-header-content'>
                         <div className='left-content'>
                             <i className='fas fa-bars'></i>
-                            <img className='header-logo' src={logo}></img>
+                            <img className='header-logo' src={logo} onClick={this.returnToHome}></img>
                         </div>
                         <div className='center-content'>
                             <div className='child-content'>
