@@ -23,6 +23,44 @@ const getTopDoctorHome = async (req, res) => {
         })
     }
 }
+
+const getAllDoctors = async (req, res) => {
+    try {
+        let data = await doctorAPIService.getAllDoctors();
+        return res.status(200).json({
+            EM: data.EM,
+            EC: data.EC,
+            DT: data.DT
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            EM: 'error from server',
+            EC: '-1',
+            DT: ''
+        })
+    }
+}
+const postInforDoctor = async (req, res) => {
+    try {
+        let data = await doctorAPIService.saveDetailInforDoctor(req.body);
+        return res.status(200).json({
+            EM: data.EM,
+            EC: data.EC,
+            DT: data.DT
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            EM: 'error from server',
+            EC: '-1',
+            DT: ''
+        })
+    }
+}
+
+
+
 // // modal create user
 const createFunc = async (req, res) => {
     try {
@@ -78,6 +116,8 @@ const deleteFunc = async (req, res) => {
     }
 }
 
+
+
 // // Remove Session Storage
 // const getUserAccount = async (req, res) => { // Sau khi đã login thành công (MW1), ko cần check quyền URL (MW2)
 //     return res.status(200).json({
@@ -94,7 +134,10 @@ const deleteFunc = async (req, res) => {
 
 
 module.exports = {
-    getTopDoctorHome
+    getTopDoctorHome,
+    getAllDoctors,
+    postInforDoctor,
+
     // createFunc,
     // readFunc,
     // updateFunc, 
