@@ -19,7 +19,7 @@ const bulkCreateScheduleService = async (dataSchedule) => {
             if (schedule && schedule.length > 0) {
                 schedule = schedule.map((item, index) => {
                     item.maxNumber = MAX_NUMBER_SCHEDULE;
-                    
+
                     return item;
                 })
             }
@@ -46,7 +46,7 @@ const bulkCreateScheduleService = async (dataSchedule) => {
             })
 
             // create data
-            if (toCreate && toCreate.length>0) {
+            if (toCreate && toCreate.length > 0) {
                 await db.Schedule.bulkCreate(toCreate); // Có hàm ni luôn à??? =? Quên hết mẹ rồi
             }
 
@@ -66,7 +66,40 @@ const bulkCreateScheduleService = async (dataSchedule) => {
     }
 }
 
+const getScheduleByDateService = async (doctorId, date) => { 
+    try {
+        if (!doctorId || !date) {
+            return {
+                EM: 'Missing params!',
+                EC: 1,
+                DT: [],
+            }
+        }
+
+        let dataSchedule = db.Schedule.findAll({
+            where: {
+                doctorId: doctorId,
+                date: date
+            },
+        })
+        if (!dataSchedule) dataSchedule = [];
+        return {
+            EM: 'Get all schedules by doctorId + date succeed!',
+            EC: 0,
+            DT: dataSchedule
+        }
+    } catch (error) {
+        console.log(error);
+        return {
+            EM: 'something wrongs with service!',
+            EC: 1,
+            DT: []
+        }
+    }
+}
+
 module.exports = {
     bulkCreateScheduleService,
+    getScheduleByDateService,
 
 }

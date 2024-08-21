@@ -36,8 +36,7 @@ const initApiRouters = (app) => {
     
     // Schedule
     router.post("/schedule/bulk-create-schedule", scheduleController.bulkCreateSchedule);
-
-    // router.get("/group/read", groupController.readFunc)
+    router.get("/schedule/get-schedule-doctor-by-date", scheduleController.getScheduleByDate);
 
     app.use("/api/v1/", router);
 }
