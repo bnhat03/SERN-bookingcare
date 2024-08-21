@@ -8,7 +8,8 @@ import Select from 'react-select';
 import DatePicker from '../../../components/Input/DatePicker';
 import moment from 'moment';
 import { toast } from 'react-toastify'
-import _ from 'lodash'
+import _ from 'lodash';
+import { saveBulkScheduleDoctor } from '../../../services/userService'
 
 class ManageSchedule extends Component {
     constructor(props) {
@@ -61,7 +62,7 @@ class ManageSchedule extends Component {
         }
     }
 
-    handleSaveSchedule = () => { // Button lưu thông tin
+    handleSaveSchedule = async () => { // Button lưu thông tin
         let { rangeTime, selectedDoctor, currentDate } = this.state;
         let result = []; // list để lưu vô DB table 
         if (!currentDate) {
@@ -72,7 +73,10 @@ class ManageSchedule extends Component {
             toast.error("Invalid selected doctor!")
             return;
         }
-        let formatedDate = moment(currentDate).format(dateFormat.SEND_TO_SERVER); // constant: DD/MM/YYYY
+        // let formatedDate = moment(currentDate).format(dateFormat.SEND_TO_SERVER); // constant: DD/MM/YYYY
+        let formatedDate = new Date(currentDate).getTime();
+
+
 
         if (rangeTime && rangeTime.length > 0) {
             let selectedTime = rangeTime.filter(item => item.isSelected === true); // Danh sách các button đang chọn => background: orange
@@ -81,7 +85,7 @@ class ManageSchedule extends Component {
                     let object = {};
                     object.doctorId = selectedDoctor.value;
                     object.date = formatedDate;
-                    object.time = schedule.keyMap;
+                    object.timeType = schedule.keyMap;
                     result.push(object);
                 })
             }
@@ -90,6 +94,12 @@ class ManageSchedule extends Component {
                 return;
             }
         }
+
+        let res = await saveBulkScheduleDoctor({  // Đáng lẹ phải dùng Redux => Đây gọi service call API luôn mẹ
+            arrSchedule: result,
+            doctorId: selectedDoctor.value,
+            formatedDate: formatedDate
+        })
 
     }
 
