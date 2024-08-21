@@ -19,7 +19,7 @@ class ManageSchedule extends Component {
             selectedDoctor: {}, // option của select đang chọn
             currentDate: '', // Ngày đang chọn để thêm các list timeType
             rangeTime: [], //TIME trong AllCode => list button để chọn giờ => Mỗi button là một object
-
+            
         }
     }
 
@@ -100,6 +100,12 @@ class ManageSchedule extends Component {
             doctorId: selectedDoctor.value,
             formatedDate: formatedDate
         })
+        if (res && res.EC===0) {
+            toast.success(res.EM);
+        }
+        else {
+            toast.error(res.EM);
+        }
 
     }
 
@@ -135,7 +141,9 @@ class ManageSchedule extends Component {
     render() {
         let { rangeTime } = this.state;
         let { language } = this.props;
-        console.log(">>> range time", rangeTime);
+        let yesterday = new Date(new Date().setDate(new Date().getDate() - 1));  // Lấy ngày hôm qua => Cho vô DatePicker 
+
+
         return (
             <div className='manage-schedule-container'>
                 <div className='m-s-title'>
@@ -161,7 +169,7 @@ class ManageSchedule extends Component {
                                 onChange={this.handleOnchangeDatePicker}
                                 className='form-control'
                                 value={this.state.currentDate}
-                                minDate={new Date()}
+                                minDate={yesterday} // Tự nhiên lấy hôm qua mà ko lấy new Date() là răng rứa bay
                             />
                         </div>
                         <div className='col-12 pick-hour-container'>
