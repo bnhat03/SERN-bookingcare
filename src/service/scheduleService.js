@@ -24,7 +24,7 @@ const bulkCreateScheduleService = async (dataSchedule) => {
                 })
             }
             // get all existing schedule có: DoctorId + date => Tìm ra các row KTG của Doctor trong ngày đó
-            let existing = db.Schedule.findAll({
+            let existing = await db.Schedule.findAll({
                 where: {
                     doctorId: dataSchedule.doctorId,
                     date: dataSchedule.formatedDate
@@ -33,16 +33,9 @@ const bulkCreateScheduleService = async (dataSchedule) => {
                 raw: true,
             })
 
-            // convert date
-            if (existing && existing.length > 0) {
-                existing = existing.map((item, index) => {
-                    item.date = new Date(item.date).getTime();
-                    return item;
-                })
-            }
             // compare different: Tìm ra các KTG của bác sĩ trong ngày nớ truyền xuống mà chưa có trong DB => Lưu vô array ni
             let toCreate = _.differenceWith(schedule, existing, (a, b) => {
-                return a.timeType === b.timeType && a.date === b.date;
+                return a.timeType === b.timeType && +a.date === +b.date; // string vs integer
             })
 
             // create data
@@ -66,7 +59,7 @@ const bulkCreateScheduleService = async (dataSchedule) => {
     }
 }
 
-const getScheduleByDateService = async (doctorId, date) => { 
+const getScheduleByDateService = async (doctorId, date) => {
     try {
         if (!doctorId || !date) {
             return {
@@ -76,11 +69,20 @@ const getScheduleByDateService = async (doctorId, date) => {
             }
         }
 
-        let dataSchedule = db.Schedule.findAll({
+        let dataSchedule = await db.Schedule.findAll({
             where: {
                 doctorId: doctorId,
-                date: date
+                date: date + ''
             },
+            include: [
+                {
+                    model: db.AllCode, // PK
+                    as: 'timeTypeData',
+                    attributes: ['valueEn', 'valueVi']
+                },
+            ],
+            raw: false,
+            nest: true
         })
         if (!dataSchedule) dataSchedule = [];
         return {

@@ -20,7 +20,7 @@ const bulkCreateSchedule = async (req, res) => {
 }
 let getScheduleByDate = async (req, res) => {
     try {
-        let infor = await scheduleService.getScheduleByDateService(req.body.doctorId, req.body.date);
+        let infor = await scheduleService.getScheduleByDateService(req.query.doctorId, req.query.date);
         return res.status(200).json({
             EM: infor.EM,
             EC: infor.EC,
