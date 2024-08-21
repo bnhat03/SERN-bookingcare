@@ -1,7 +1,7 @@
 // Mục đích: API doctors
 import db from "../models";
 import { Buffer } from 'buffer';
-import _ from 'lodash'
+import _, { includes } from 'lodash'
 const getTopDoctorHome = async (limitInput) => { // Lấy list limit Doctor tạo sau cùng
     try {
         let doctors = await db.User.findAll({
@@ -159,7 +159,19 @@ let getDetailDoctorById = async (inputId) => { // inputId: doctorId
                 },
                 include: [
                     { model: db.Markdown, attributes: ['contentHTML', 'contentMarkdown', 'description'] }, // FK
-                    { model: db.AllCode, as: 'positionData', attributes: ['valueEn', 'valueVi'] } // PK
+                    { model: db.AllCode, as: 'positionData', attributes: ['valueEn', 'valueVi'] }, // PK
+                    {
+                        model: db.Doctor_Infor,
+                        attributes: {
+                            exclude: ['id', 'doctorId']
+                        },
+                        include: [ // User (Doctor) => Doctor_Infor => AllCode
+                            { model: db.AllCode, as: 'priceTypeData', attributes: ['valueEn', 'valueVi'] },
+                            { model: db.AllCode, as: 'paymentTypeData', attributes: ['valueEn', 'valueVi'] },
+                            { model: db.AllCode, as: 'provinceTypeData', attributes: ['valueEn', 'valueVi'] },
+                        ],
+                    }
+
                 ],
                 raw: false, // Giữ nguyên sequelize object
                 nest: true
