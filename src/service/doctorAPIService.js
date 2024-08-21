@@ -1,6 +1,7 @@
 // Mục đích: API doctors
 import db from "../models";
 import { Buffer } from 'buffer';
+import _ from 'lodash'
 const getTopDoctorHome = async (limitInput) => { // Lấy list limit Doctor tạo sau cùng
     try {
         let doctors = await db.User.findAll({
@@ -66,7 +67,9 @@ const getAllDoctors = async () => {
 }
 const saveDetailInforDoctor = async (inputDataMd) => { // create data markdown & HTML doctor
     try {
-        if (!inputDataMd || !inputDataMd.contentHTML || !inputDataMd.contentMarkdown || !inputDataMd.action) {
+        if (!inputDataMd || !inputDataMd.doctorId || !inputDataMd.contentHTML || !inputDataMd.contentMarkdown || !inputDataMd.action
+            || !inputDataMd.selectedPrice || !inputDataMd.selectedPayment || !inputDataMd.selectedProvince ||
+            !inputDataMd.nameClinic || !inputDataMd.addressClinic || !inputDataMd.note) {
             return {
                 EM: 'Missing params!',
                 EC: 1,
@@ -74,6 +77,7 @@ const saveDetailInforDoctor = async (inputDataMd) => { // create data markdown &
             }
         }
         else {
+            // upsert to Markdown table
             if (inputDataMd.action === "CREATE") {
                 await db.Markdown.create({
                     contentHTML: inputDataMd.contentHTML,
@@ -94,6 +98,33 @@ const saveDetailInforDoctor = async (inputDataMd) => { // create data markdown &
                     await doctorMarkdown.save();
                 }
             }
+            // upset to Doctor_Infor table => Ko cần truyền action như trên => Biết được CREATE / UPDATE
+            let doctorInfor = await db.Doctor_Infor.findOne({
+                where: { doctorId: inputDataMd.doctorId },
+                raw: false,
+            })
+            if (doctorInfor) { // update
+                doctorInfor.doctorId = inputDataMd.doctorId;
+                doctorInfor.priceId = inputDataMd.selectedPrice;
+                doctorInfor.paymentId = inputDataMd.selectedPayment;
+                doctorInfor.provinceId = inputDataMd.selectedProvince;
+                doctorInfor.nameClinic = inputDataMd.nameClinic;
+                doctorInfor.addressClinic = inputDataMd.addressClinic;
+                doctorInfor.note = inputDataMd.note;
+                await doctorInfor.save();
+            }
+            else { // create
+                await db.Doctor_Infor.create({
+                    doctorId: inputDataMd.doctorId,
+                    priceId: inputDataMd.selectedPrice,
+                    paymentId: inputDataMd.selectedPayment,
+                    provinceId: inputDataMd.selectedProvince,
+                    nameClinic: inputDataMd.nameClinic,
+                    addressClinic: inputDataMd.addressClinic,
+                    note: inputDataMd.note,
+                })
+            }
+
             return {
                 EM: 'Save information doctor successfully.',
                 EC: 0,
@@ -104,7 +135,7 @@ const saveDetailInforDoctor = async (inputDataMd) => { // create data markdown &
         console.log(error);
         return {
             EM: 'something wrongs with service!',
-            EC: 1,
+            EC: -1,
             DT: []
         }
     }
