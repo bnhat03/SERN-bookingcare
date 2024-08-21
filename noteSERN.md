@@ -15,3 +15,6 @@
 
 # Model: schedule
     npx sequelize-cli model:generate --name Schedule --attributes currentNumber:Integer, maxNumber:Integer, date:String, timeType:String, doctorId:Integer
+
+# Model: Doctor_infor
+    npx sequelize-cli model:generate --name Doctor_Infor --attributes doctorId:Integer, priceId:String, provinceId:String, paymentId:String, addressClinic:String, nameClinic:String, note:String, count:Integer
