@@ -1,4 +1,4 @@
-// Mục đích: API users
+// Mục đích: API doctors
 import db from "../models";
 import { Buffer } from 'buffer';
 const getTopDoctorHome = async (limitInput) => { // Lấy list limit Doctor tạo sau cùng

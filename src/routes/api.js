@@ -4,6 +4,8 @@ import allcodeController from '../controller/allcodeController'
 import userController from "../controller/userController"
 import groupController from "../controller/groupController"
 import doctorController from "../controller/doctorController"
+import scheduleController from "../controller/scheduleController"
+
 import { checkUserJWT, checkUserPermission } from '../middleware/JWTAction'
 const router = express.Router();
 
@@ -31,11 +33,9 @@ const initApiRouters = (app) => {
     router.get("/doctor/get-all-doctors", doctorController.getAllDoctors);
     router.post("/doctor/save-infor-doctors", doctorController.postInforDoctor);
     router.get("/doctor/get-detail-doctor-by-id", doctorController.getDetailDoctorById);
-    // router.post("/role/create", roleController.createFunc)
-    // router.put("/role/update", roleController.updateFunc)
-    // router.delete("/role/delete", roleController.deleteFunc)
-    // router.get("/role/by-group/:groupId", roleController.getRolesByGroup)
-    // router.post("/role/assign-to-group", roleController.assignRolesToGroup)
+    
+    // Schedule
+    router.post("/schedule/bulk-create-schedule", scheduleController.bulkCreateSchedule);
 
     // router.get("/group/read", groupController.readFunc)
 
