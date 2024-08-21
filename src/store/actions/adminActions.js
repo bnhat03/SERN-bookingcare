@@ -1,6 +1,8 @@
 import actionTypes from './actionTypes';
-import { getAllCodesService, createNewUserService, getAllUsers, deleteUserService, updateUserService, 
-    getTopDoctorsHomeService, getAllDoctorsService, saveDetailDoctorService } from '../../services/userService';
+import {
+    getAllCodesService, createNewUserService, getAllUsers, deleteUserService, updateUserService,
+    getTopDoctorsHomeService, getAllDoctorsService, saveDetailDoctorService
+} from '../../services/userService';
 import { toast } from 'react-toastify';
 // GENDER
 export const fetchGenderStart = () => { // call API
@@ -261,3 +263,27 @@ export const saveDetailDoctor = (dataMd) => {
     }
 }
 
+// Schedule doctor
+export const fetchAllScheduleTime = () => {
+    return async (dispatch, getState) => {
+        try {
+            let res = await getAllCodesService("TIME");
+            if (res && res.EC === 0) {
+                dispatch({
+                    type: actionTypes.FETCH_ALLCODE_SCHEDULE_TIME_SUCCESS,
+                    dataTimes: res.DT
+                })
+            }
+            else {
+                dispatch({
+                    type: actionTypes.FETCH_ALLCODE_SCHEDULE_TIME_FAILED
+                })
+            }
+        } catch (error) {
+            console.log(error);
+            dispatch({
+                type: actionTypes.FETCH_ALLCODE_SCHEDULE_TIME_FAILED
+            })
+        }
+    }
+}
