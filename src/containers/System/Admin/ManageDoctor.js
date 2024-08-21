@@ -37,9 +37,13 @@ class ManageDoctor extends Component {
 
             // save to Doctor_Infor table
             listPrice: [],
+                // list Price trong AllCode table
             listPayment: [],
             listProvince: [],
-            selectedPrice: {},
+            selectedPrice: {}, 
+                // Có 2 key
+                    // value:  keyMap (ở AllCode table)
+                    // label: valueEn/valueVi (ở AllCode table)
             selectedPayment: {},
             selectedProvince: {},
             nameClinic: '',
@@ -78,14 +82,52 @@ class ManageDoctor extends Component {
     }
     handleChangeSelect = async (selectedOption) => { // Thay đổi select riêng cho Doctor => Auto fill input nếu có trong table Mardkdown ở DB 
         this.setState({ selectedOption });
+        let { listPayment, listPrice, listProvince } = this.state;
+
         let res = await getDetailInforDoctorService(selectedOption.value);
         if (res && res.EC === 0 && res.DT && res.DT.Markdown) { // Doctor đã có infor trong db Markdown => Edit
             let markdown = res.DT.Markdown;
+
+            let selectedPrice = {},
+                selectedPayment = {},
+                selectedProvince = {},
+                paymentId = '',
+                priceId = '',
+                provinceId = '',
+                nameClinic = '',
+                addressClinic = '',
+                note = '';
+            if (res.DT.Doctor_Infor) {
+                addressClinic = res.DT.Doctor_Infor.addressClinic;
+                nameClinic = res.DT.Doctor_Infor.nameClinic;
+                note = res.DT.Doctor_Infor.note;
+                priceId = res.DT.Doctor_Infor.priceId;
+                paymentId = res.DT.Doctor_Infor.paymentId;
+                provinceId = res.DT.Doctor_Infor.provinceId;
+
+                selectedPrice = listPrice.find(item => { // Tìm option (object) đang chọn của select Price
+                    return item && item.value===priceId
+                })
+                selectedPayment = listPayment.find(item => { // Tìm option (object) đang chọn của select Price
+                    return item && item.value===paymentId
+                })
+                selectedProvince = listProvince.find(item => { // Tìm option (object) đang chọn của select Price
+                    return item && item.value===provinceId
+                })
+            }
+
             this.setState({
                 contentHTML: markdown.contentHTML,
                 contentMarkdown: markdown.contentMarkdown,
                 description: markdown.description,
-                hasOldData: true
+                hasOldData: true,
+
+                selectedPrice: selectedPrice,
+                selectedPayment: selectedPayment,
+                selectedProvince: selectedProvince,
+                nameClinic: nameClinic,
+                addressClinic: addressClinic,
+                note: note
             })
         }
         else { //Doctor chưa có infor trong db Markdown => Create
@@ -94,6 +136,9 @@ class ManageDoctor extends Component {
                 contentMarkdown: '',
                 description: '',
                 hasOldData: false,
+                nameClinic: '',
+                addressClinic: '',
+                note: ''
             })
         }
     };
