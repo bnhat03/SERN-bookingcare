@@ -6,7 +6,7 @@ import { getScheduleDoctorByDate } from '../../../services/userService';
 import moment from 'moment';
 import localization from 'moment/locale/vi'; // Date => Mặc định là vietnam
 import { FormattedMessage } from 'react-intl';
-
+import BookingModal from './Modal/BookingModal'
 
 class DoctorSchedule extends Component {
     constructor(props) {
@@ -14,6 +14,11 @@ class DoctorSchedule extends Component {
         this.state = {
             allDays: [], // 7 ngày trong Select => VN/EN => Mỗi ngày là một object có {label, value}
             allAvailableTime: [], // List các object KTG của bác sĩ trong ngày đó
+
+            // Modal => props truyền xuống Modal
+            isOpenModalBooking: true,
+            dataScheduleTimeModal: {},
+
         }
     }
 
@@ -65,6 +70,20 @@ class DoctorSchedule extends Component {
         }
     };
 
+    // Modal
+    handldeClickScheduleTime = (time) => { // Click button KTG
+        this.setState({
+            isOpenModalBooking: true,
+            dataScheduleTimeModal: time
+        })
+    }
+    closeBookingClose = () => {
+        this.setState({
+            isOpenModalBooking: false,
+
+        })
+    }
+
     async componentDidMount() {
         let { language } = this.props;
         let allDays = this.getArrayDays(language);
@@ -80,6 +99,7 @@ class DoctorSchedule extends Component {
                 allDays: allDays,
             })
         }
+        // Mới ấn vô => Hiển thị luôn (Select option = Hôm nay) và (list buttons KTG của hôm nay)
         if (this.props.doctorIdFromParent !== prevProps.doctorIdFromParent) {  // Nằm trong component cha => Nhận props từ component cha 
             // => Cái ni để xử lý trường hợp props ni cũng ảnh hưởng bởi  state của cha => props thay đổi theo state => re-render lại component con ni
             let allDays = this.getArrayDays(this.props.language);
@@ -161,6 +181,12 @@ class DoctorSchedule extends Component {
                         </div>
                     </div>
                 </div>
+                {/* Modal */}
+                <BookingModal
+                    isOpenModal = {this.state.isOpenModalBooking}
+                    closeBookingClose={this.closeBookingClose}
+                    dataTime={this.state.dataScheduleTimeModal}
+                />
             </>
         );
     }
