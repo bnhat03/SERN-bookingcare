@@ -87,11 +87,16 @@ const saveBulkScheduleDoctor = (dataSchedule) => { // id doctor
         }
     });
 }
-const getScheduleDoctorByDate = (doctorId, date) => { 
-    console.log("check: ", doctorId, date);
+const getScheduleDoctorByDate = (doctorId, date) => {
     return axios({
         method: 'get',
         url: `/api/v1/schedule/get-schedule-doctor-by-date?doctorId=${doctorId}&date=${date}`
+    });
+}
+const getExtraInforDoctorById = (doctorId) => {
+    return axios({
+        method: 'get',
+        url: `/api/v1/doctor/get-extra-infor-doctor-by-id?doctorId=${doctorId}`
     });
 }
 
@@ -108,6 +113,7 @@ export {
     getDetailInforDoctorService,
     saveBulkScheduleDoctor,
     getScheduleDoctorByDate,
+    getExtraInforDoctorById,
 
 }
 
