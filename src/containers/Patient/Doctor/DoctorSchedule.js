@@ -16,7 +16,7 @@ class DoctorSchedule extends Component {
             allAvailableTime: [], // List các object KTG của bác sĩ trong ngày đó
 
             // Modal => props truyền xuống Modal
-            isOpenModalBooking: true,
+            isOpenModalBooking: false,
             dataScheduleTimeModal: {},
 
         }
@@ -156,6 +156,7 @@ class DoctorSchedule extends Component {
                                                             <button
                                                                 key={index}
                                                                 className={language === LANGUAGES.VI ? 'btn-vi' : 'btn-en'}
+                                                                onClick={() => this.handldeClickScheduleTime(item)}
                                                             >
                                                                 {timeDisplay}
                                                             </button>
@@ -183,7 +184,7 @@ class DoctorSchedule extends Component {
                 </div>
                 {/* Modal */}
                 <BookingModal
-                    isOpenModal = {this.state.isOpenModalBooking}
+                    isOpenModal={this.state.isOpenModalBooking}
                     closeBookingClose={this.closeBookingClose}
                     dataTime={this.state.dataScheduleTimeModal}
                 />
