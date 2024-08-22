@@ -103,6 +103,8 @@ const saveDetailInforDoctor = async (inputDataMd) => { // create data markdown &
                 where: { doctorId: inputDataMd.doctorId },
                 raw: false,
             })
+
+
             if (doctorInfor) { // update
                 doctorInfor.doctorId = inputDataMd.doctorId;
                 doctorInfor.priceId = inputDataMd.selectedPrice;
@@ -195,6 +197,50 @@ let getDetailDoctorById = async (inputId) => { // inputId: doctorId
         }
     }
 }
+let getExtraInforDoctorByIdService = async (inputId) => { // inputId: doctorId
+    try {
+        if (!inputId) {
+            return {
+                EM: 'Missing required parameter!',
+                EC: 1,
+                DT: [],
+            }
+        }
+        else {
+            
+
+            let data = await db.Doctor_Infor.findOne({
+                where: {
+                    doctorId: inputId
+                },
+                attributes: {
+                    exclude: ['id', 'doctorId']
+                },
+                include: [
+                    { model: db.AllCode, as: 'priceTypeData', attributes: ['valueEn', 'valueVi'] }, // PK
+                    { model: db.AllCode, as: 'paymentTypeData', attributes: ['valueEn', 'valueVi'] }, // PK
+                    { model: db.AllCode, as: 'provinceTypeData', attributes: ['valueEn', 'valueVi'] }, // PK
+                ],
+                raw: false, // Giữ nguyên sequelize object
+                nest: true
+            })
+            if (!data) data = {}
+            console.log(">>> check dât", data);
+            return {
+                EM: 'Find detail infor doctor succeed!',
+                EC: 0,
+                DT: data
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        return {
+            EM: 'something wrongs with service!',
+            EC: 1,
+            DT: []
+        }
+    }
+}
 
 
 module.exports = {
@@ -202,4 +248,5 @@ module.exports = {
     getAllDoctors,
     saveDetailInforDoctor,
     getDetailDoctorById,
+    getExtraInforDoctorByIdService, 
 }

@@ -33,7 +33,8 @@ const initApiRouters = (app) => {
     router.get("/doctor/get-all-doctors", doctorController.getAllDoctors);
     router.post("/doctor/save-infor-doctors", doctorController.postInforDoctor);
     router.get("/doctor/get-detail-doctor-by-id", doctorController.getDetailDoctorById);
-    
+    router.get("/doctor/get-extra-infor-doctor-by-id", doctorController.getExtraInforDoctorById);
+
     // Schedule
     router.post("/schedule/bulk-create-schedule", scheduleController.bulkCreateSchedule);
     router.get("/schedule/get-schedule-doctor-by-date", scheduleController.getScheduleByDate);

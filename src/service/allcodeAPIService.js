@@ -1,5 +1,5 @@
 import db from "../models";
-const getAllCodes = async (typeInput) => {
+const getAllCodes = async (typeInput) => { // type: USERS, PRICE, PAYMENT, PROVINCE
     try {
         if(!typeInput) {
             return {

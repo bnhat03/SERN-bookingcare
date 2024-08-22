@@ -75,19 +75,13 @@ const getDetailDoctorById = async (req, res) => {
         })
     }
 }
-
-
-
-// // modal create user
-const createFunc = async (req, res) => {
+const getExtraInforDoctorById = async (req, res) => {
     try {
-        // Chưa validate ??? => Trùng email, phone
-
-        let data = await userAPIService.createNewUser(req.body);
+        let infor = await doctorAPIService.getExtraInforDoctorByIdService(req.query.doctorId);
         return res.status(200).json({
-            EM: data.EM,
-            EC: data.EC,
-            DT: data.DT
+            EM: infor.EM,
+            EC: infor.EC,
+            DT: infor.DT
         })
     } catch (error) {
         console.log(error);
@@ -98,40 +92,7 @@ const createFunc = async (req, res) => {
         })
     }
 }
-const updateFunc = async (req, res) => {
-    try {
-        let data = await userAPIService.updateUser(req.body);
-        return res.status(200).json({
-            EM: data.EM,
-            EC: data.EC,
-            DT: data.DT
-        })
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({
-            EM: 'error from server',
-            EC: '-1',
-            DT: ''
-        })
-    }
-}
-const deleteFunc = async (req, res) => {
-    try {
-        let data = await userAPIService.deleteUser(req.query.id);
-        return res.status(200).json({
-            EM: data.EM,
-            EC: data.EC,
-            DT: data.DT
-        })
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({
-            EM: 'error from server',
-            EC: '-1',
-            DT: ''
-        })
-    }
-}
+
 
 
 
@@ -155,6 +116,8 @@ module.exports = {
     getAllDoctors,
     postInforDoctor,
     getDetailDoctorById,
+    getExtraInforDoctorById,
+
     // createFunc,
     // readFunc,
     // updateFunc, 
