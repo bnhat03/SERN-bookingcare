@@ -92,23 +92,23 @@ const getExtraInforDoctorById = async (req, res) => {
         })
     }
 }
-
-
-
-
-// // Remove Session Storage
-// const getUserAccount = async (req, res) => { // Sau khi đã login thành công (MW1), ko cần check quyền URL (MW2)
-//     return res.status(200).json({
-//         EM: "ok",
-//         EC: 0,
-//         DT: {
-//             access_token: req.token,
-//             groupWithRoles: req.user.groupWithRoles,
-//             email: req.user.email,
-//             username: req.user.username
-//         }
-//     })
-// }
+const getProfileDoctorById = async (req, res) => {
+    try {
+        let infor = await doctorAPIService.getProfileDoctorByIdService(req.query.doctorId);
+        return res.status(200).json({
+            EM: infor.EM,
+            EC: infor.EC,
+            DT: infor.DT
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            EM: 'error from server',
+            EC: '-1',
+            DT: ''
+        })
+    }
+}
 
 
 module.exports = {
@@ -117,10 +117,6 @@ module.exports = {
     postInforDoctor,
     getDetailDoctorById,
     getExtraInforDoctorById,
+    getProfileDoctorById,
 
-    // createFunc,
-    // readFunc,
-    // updateFunc, 
-    // deleteFunc, 
-    // getUserAccount
 }

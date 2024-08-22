@@ -207,7 +207,7 @@ let getExtraInforDoctorByIdService = async (inputId) => { // inputId: doctorId
             }
         }
         else {
-            
+
 
             let data = await db.Doctor_Infor.findOne({
                 where: {
@@ -225,9 +225,64 @@ let getExtraInforDoctorByIdService = async (inputId) => { // inputId: doctorId
                 nest: true
             })
             if (!data) data = {}
-            console.log(">>> check dât", data);
             return {
                 EM: 'Find detail infor doctor succeed!',
+                EC: 0,
+                DT: data
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        return {
+            EM: 'something wrongs with service!',
+            EC: 1,
+            DT: []
+        }
+    }
+}
+let getProfileDoctorByIdService = async (inputId) => { // inputId: doctorId
+    try {
+        if (!inputId) {
+            return {
+                EM: 'Missing required parameter!',
+                EC: 1,
+                DT: [],
+            }
+        }
+        else {
+            let data = await db.User.findOne({
+                where: {
+                    id: inputId
+                },
+                attributes: {
+                    exclude: ['password']
+                },
+                include: [
+                    { model: db.Markdown, attributes: ['contentHTML', 'contentMarkdown', 'description'] }, // User => Markdown
+
+                    { model: db.AllCode, as: 'positionData', attributes: ['valueEn', 'valueVi'] }, // User => AllCode
+
+                    {
+                        model: db.Doctor_Infor, // User => Doctor_Infor => AllCode
+                        attributes: {
+                            exclude: ['id', 'doctorId']
+                        },
+                        include: [
+                            { model: db.AllCode, as: 'priceTypeData', attributes: ['valueEn', 'valueVi'] }, // PK
+                            { model: db.AllCode, as: 'paymentTypeData', attributes: ['valueEn', 'valueVi'] }, // PK
+                            { model: db.AllCode, as: 'provinceTypeData', attributes: ['valueEn', 'valueVi'] }, // PK
+                        ]
+                    }
+                ],
+                raw: false, // Giữ nguyên sequelize object
+                nest: true
+            })
+            if (data && data.image) {
+                data.image = Buffer(data.image, 'base64').toString('binary'); // Convert BLOB => Buffer => base64 trước khi res -> React
+            }
+            if (!data) data = {}
+            return {
+                EM: 'Find profileDoctorByIdService succeed!',
                 EC: 0,
                 DT: data
             }
@@ -248,5 +303,7 @@ module.exports = {
     getAllDoctors,
     saveDetailInforDoctor,
     getDetailDoctorById,
-    getExtraInforDoctorByIdService, 
+    getExtraInforDoctorByIdService,
+    getProfileDoctorByIdService,
+
 }
