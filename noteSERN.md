@@ -18,3 +18,6 @@
 
 # Model: Doctor_infor
     npx sequelize-cli model:generate --name Doctor_Infor --attributes doctorId:Integer, priceId:String, provinceId:String, paymentId:String, addressClinic:String, nameClinic:String, note:String, count:Integer
+
+# Model: booking
+    npx sequelize-cli model:generate --name Booking --attributes statusId:String, doctorId:Integer, patientId:Integer, date:String, timeType:String, token:String

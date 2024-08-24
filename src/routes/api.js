@@ -5,6 +5,7 @@ import userController from "../controller/userController"
 import groupController from "../controller/groupController"
 import doctorController from "../controller/doctorController"
 import scheduleController from "../controller/scheduleController"
+import patientController from "../controller/patientController"
 
 import { checkUserJWT, checkUserPermission } from '../middleware/JWTAction'
 const router = express.Router();
@@ -39,6 +40,9 @@ const initApiRouters = (app) => {
     // Schedule
     router.post("/schedule/bulk-create-schedule", scheduleController.bulkCreateSchedule);
     router.get("/schedule/get-schedule-doctor-by-date", scheduleController.getScheduleByDate);
+
+    // Patient
+    router.post("/patient/patient-book-appointment", patientController.postBookAppointment);
 
     app.use("/api/v1/", router);
 }
