@@ -43,6 +43,7 @@ const initApiRouters = (app) => {
 
     // Patient
     router.post("/patient/patient-book-appointment", patientController.postBookAppointment);
+    router.post("/patient/verify-book-appointment", patientController.postVerifyBookAppointment); // Client nhấn vô link ở email
 
     app.use("/api/v1/", router);
 }
