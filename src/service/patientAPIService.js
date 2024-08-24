@@ -1,7 +1,7 @@
 import db from "../models";
 require('dotenv').config();
 import emailService from './emailService'
-import {v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 
 
 let buildUrlEmail = (doctorId, token) => {
@@ -10,7 +10,7 @@ let buildUrlEmail = (doctorId, token) => {
 }
 const postBookAppointmentService = async (data) => {
     try {
-        if (!data || !data.email || !data.doctorId || !data.timeType || !data.date  || !data.fullName) {
+        if (!data || !data.email || !data.doctorId || !data.timeType || !data.date || !data.fullName) {
             return {
                 EM: 'Missing params!',
                 EC: 1,
@@ -45,7 +45,8 @@ const postBookAppointmentService = async (data) => {
                         doctorId: data.doctorId,
                         patientId: user[0].id,
                         date: data.date,
-                        timeType: data.timeType
+                        timeType: data.timeType,
+                        token: token
                     }
                 })
             }
@@ -74,10 +75,12 @@ const postVerifyBookAppointmentService = async (data) => {
                 DT: [],
             }
         }
-        else {           
+        else {
+            console.log('>>> check token: ', data.token);
+            console.log('>>> check doctorId: ', data.doctorId);
             let appointment = await db.Booking.findOne({
-                where: { 
-                    doctorId: data.doctorId, 
+                where: {
+                    doctorId: data.doctorId,
                     token: data.token,
                     statusId: 'S1'
                 },
