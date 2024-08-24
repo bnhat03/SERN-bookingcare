@@ -4,14 +4,14 @@ import { connect } from 'react-redux';
 import './BookingModal.scss'
 import { Modal } from 'reactstrap';
 import ProfileDoctor from '../ProfileDoctor';
-import _ from 'lodash'
+import _, { times } from 'lodash'
 import DatePicker from '../../../../components/Input/DatePicker';
 import * as actions from "../../../../store/actions";
 import { LANGUAGES, } from '../../../../utils';
 import Select from 'react-select'
 import { toast } from 'react-toastify'
 import { postPatientBookAppointment } from '../../../../services/userService'
-
+import moment from 'moment';
 
 class BookingModal extends Component {
     constructor(props) {
@@ -56,8 +56,44 @@ class BookingModal extends Component {
         this.setState({ selectedGender: selectedOption });
     };
 
-    handleConfirmBooking = async (doctorId, timeType) => {
+
+
+    handleOnchangeDatePicker = (date) => {
+        this.setState({
+            birthday: date[0],
+        })
+    }
+
+    buildTimeBooking = (dataTime) => {
+        let { language } = this.props;
+        console.log(">>> check hihi", dataTime);
+        if (dataTime && !_.isEmpty(dataTime)) {
+            let time = language === LANGUAGES.VI ? dataTime.timeTypeData.valueVi : dataTime.timeTypeData.valueEn;
+            let date = language === LANGUAGES.VI
+                ? moment.unix(+dataTime.date / 1000).format('dddd - DD/MM/YYYY') // unix timestamp => date (Thứ + ngày/tháng/năm)
+                : moment.unix(+dataTime.date / 1000).locale('en').format('ddd - DD/MM/YYYY')
+            return `${time}  - ${date}`;
+        }
+        return '';
+    }
+
+    buildDoctorName = (dataTime) => {
+        let { language } = this.props;
+        if (dataTime && !_.isEmpty(dataTime)) {
+            let name = language === LANGUAGES.VI
+                ? `${dataTime.doctorData.lastName} ${dataTime.doctorData.firstName}`
+                : `${dataTime.doctorData.firstName} ${dataTime.doctorData.lastName}`
+            return name;
+        }
+        return '';
+    }
+
+
+    handleConfirmBooking = async (dataTime) => { // dataTime: Ko lấy được this.props.dateTime => Vì DidUpate ko thực hiện được if (prev vs this) đã nói
         let date = new Date(this.state.birthday).getTime();
+        let timeString = this.buildTimeBooking(dataTime);
+        let doctorName = this.buildDoctorName(dataTime);
+
         let res = await postPatientBookAppointment({
             fullName: this.state.fullName,
             phoneNumber: this.state.phoneNumber,
@@ -66,8 +102,11 @@ class BookingModal extends Component {
             reason: this.state.reason,
             date: date,
             selectedGender: this.state.selectedGender.value,
-            doctorId: doctorId,
-            timeType: timeType,
+            doctorId: dataTime.doctorId,
+            timeType: dataTime.timeType,
+            language: this.props.language,
+            timeString: timeString,
+            doctorName: doctorName
 
         })
         if (res && res.EC === 0) {
@@ -79,12 +118,6 @@ class BookingModal extends Component {
         }
     }
 
-    handleOnchangeDatePicker = (date) => {
-        this.setState({
-            birthday: date[0],
-        })
-    }
-
     componentDidMount() {
         this.props.getGenders();
     }
@@ -94,7 +127,6 @@ class BookingModal extends Component {
         // Dưới render vẫn render props dataTime ni bình thường mà
         // => Phải dùng cách thủ công là truyền params trong render chơ ko dùng được State
         if (prevProps.dateTime !== this.props.dateTime) {
-            console.log(">>> hehe", this.props.dateTime);
             if (this.props.dataTime && !_.isEmpty(this.props.dataTime)) {
                 let doctorId = this.props.dataTime.doctorId;
                 let timeType = this.props.dataTime.timeType;
@@ -231,7 +263,7 @@ class BookingModal extends Component {
                     <div className='booking-modal-footer'>
                         <button
                             className='btn-booking-confirm'
-                            onClick={() => this.handleConfirmBooking(doctorId, timeType)}
+                            onClick={() => this.handleConfirmBooking(dataTime)}
                         >
                             <FormattedMessage id='patient.booking-modal.btnConfirm' />
                         </button>
