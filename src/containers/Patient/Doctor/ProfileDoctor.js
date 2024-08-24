@@ -5,6 +5,9 @@ import './ProfileDoctor.scss'
 import { getProfileDoctorById } from '../../../services/userService';
 import { LANGUAGES, CRUD_ACTIONS, dateFormat } from '../../../utils';
 import { NumericFormat } from 'react-number-format';
+import _ from 'lodash'
+import moment from 'moment';
+
 
 class ProfileDoctor extends Component {
     constructor(props) {
@@ -22,12 +25,27 @@ class ProfileDoctor extends Component {
                 result = res.DT;
             }
         }
-        console.log(">>> check: hehe")
         return result;
     }
+
+    renderTimeBooking = (dataTime) => {
+        let { language } = this.props.language;
+        if (dataTime && !_.isEmpty(dataTime)) {
+            let time = language === LANGUAGES.VI ? dataTime.timeTypeData.valueVi : dataTime.timeTypeData.valueEn;
+            let date = language === LANGUAGES.VI
+                ? moment.unix(+dataTime.date / 1000).format('dddd - DD/MM/YYYY') // unix timestamp => date (Thứ + ngày/tháng/năm)
+                : moment.unix(+dataTime.date / 1000).locale('en').format('ddd - DD/MM/YYYY')
+            return (
+                <>
+                    <div>{time} - {date}</div>
+                    <div><FormattedMessage id='patient.booking-modal.priceBooking' /></div>
+                </>
+            )
+        }
+    }
+
     async componentDidMount() {
         let data = await this.getInforDoctor(this.props.doctorId);
-        console.log(">>> check: data", this.props.data);
         this.setState({
             dataProfile: data
         })
@@ -47,7 +65,8 @@ class ProfileDoctor extends Component {
 
     render() {
         let { dataProfile } = this.state;
-        let { language } = this.props;
+        let { language, isShowDescriptionDoctor, dataTime } = this.props;
+        // isShowDescriptionDoctor: Chọn hiển thị thông tin chi tiết Doctor hoặc TG booking
         let nameVi = '', nameEn = '';
         if (dataProfile && dataProfile.positionData) {
             nameVi = `${dataProfile.positionData.valueVi}, ${dataProfile.lastName} ${dataProfile.firstName}`;
@@ -71,19 +90,33 @@ class ProfileDoctor extends Component {
                             </div>
                             <div className='down'>
                                 {
-                                    dataProfile && dataProfile.Markdown
-                                    && dataProfile.Markdown.description
-                                    &&
-                                    <span>
-                                        {dataProfile.Markdown.description}
-                                    </span>
+                                    isShowDescriptionDoctor === true
+                                        ?
+                                        <>
+                                            {/* Thông tin chi tiết bác sĩ */}
+                                            {
+                                                dataProfile && dataProfile.Markdown
+                                                && dataProfile.Markdown.description
+                                                &&
+                                                <span>
+                                                    {dataProfile.Markdown.description}
+                                                </span>
+                                            }
+                                        </>
+                                        :
+                                        <>
+                                            {/* Hoặc KTG + ngày đặt lịch */}
+                                            {this.renderTimeBooking(dataTime)}
+                                        </>
+
                                 }
+
                             </div>
                         </div>
 
                     </div>
                     <div className='price'>
-                        Giá khám:
+                        <FormattedMessage id='patient.booking-modal.price' />
                         { // Giá khám => VN
                             dataProfile && dataProfile.Doctor_Infor && language === LANGUAGES.VI &&
                             <NumericFormat

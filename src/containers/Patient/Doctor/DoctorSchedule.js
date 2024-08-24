@@ -72,6 +72,7 @@ class DoctorSchedule extends Component {
 
     // Modal
     handldeClickScheduleTime = (time) => { // Click button KTG
+        console.log(">>> check dataScheduleTimeModal", time)
         this.setState({
             isOpenModalBooking: true,
             dataScheduleTimeModal: time
@@ -113,7 +114,7 @@ class DoctorSchedule extends Component {
 
     render() {
         let { language } = this.props;
-        let { allDays, allAvailableTime } = this.state;
+        let { allDays, allAvailableTime, dataScheduleTimeModal } = this.state;
 
         return (
             <>
