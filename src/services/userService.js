@@ -115,6 +115,16 @@ const postPatientBookAppointment = (data) => {
     });
 }
 
+const postVerifyBookingAppointment = (data) => { // Nhấn link trong email
+    return axios({
+        method: 'post',
+        url: '/api/v1/patient/verify-book-appointment',
+        data: {
+            ...data
+        }
+    });
+}
+
 export {
     handleLoginAPI,
     getAllCodesService,
@@ -131,7 +141,7 @@ export {
     getExtraInforDoctorById,
     getProfileDoctorById,
     postPatientBookAppointment,
-
+    postVerifyBookingAppointment,
     
 }
 
