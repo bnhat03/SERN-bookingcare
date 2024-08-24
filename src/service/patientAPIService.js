@@ -1,5 +1,6 @@
 import db from "../models";
 require('dotenv').config();
+import emailService from './emailService'
 
 const postBookAppointmentService = async (data) => {
     try {
@@ -12,6 +13,15 @@ const postBookAppointmentService = async (data) => {
             }
         }
         else {
+            // send Email
+            await emailService.sendSimpleEmail({
+                receiverEmail: 'nhatbien2003@gmail.com',
+                patientName: 'Bieenj Nhaatj daay',
+                time: '8:00 - 9:00 Chủ nhật 1/8/2024',
+                doctorName: 'Bien Nhat',
+                redirectLink: 'https://www.youtube.com/watch?v=0GL--Adfqhc&list=PLncHg6Kn2JT6E38Z3kit9Hnif1xC_9VqI&index=97'
+            })
+
             // upsert patient (User)
             let user = await db.User.findOrCreate({
                 where: { email: data.email },
