@@ -5,7 +5,7 @@ import emailService from './emailService'
 const postBookAppointmentService = async (data) => {
     try {
         console.log(">>> check data: ", data);
-        if (!data || !data.email || !data.doctorId || !data.timeType || !data.date) {
+        if (!data || !data.email || !data.doctorId || !data.timeType || !data.date  || !data.fullName) {
             return {
                 EM: 'Missing params!',
                 EC: 1,
@@ -15,10 +15,11 @@ const postBookAppointmentService = async (data) => {
         else {
             // send Email
             await emailService.sendSimpleEmail({
-                receiverEmail: 'nhatbien2003@gmail.com',
-                patientName: 'Bieenj Nhaatj daay',
-                time: '8:00 - 9:00 Chủ nhật 1/8/2024',
-                doctorName: 'Bien Nhat',
+                receiverEmail: 'nhatbien2003@gmail.com', // data.emailReceiver
+                patientName: data.fullName,
+                time: data.timeString,
+                doctorName: data.doctorName,
+                language: data.language,
                 redirectLink: 'https://www.youtube.com/watch?v=0GL--Adfqhc&list=PLncHg6Kn2JT6E38Z3kit9Hnif1xC_9VqI&index=97'
             })
 
