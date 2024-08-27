@@ -76,8 +76,6 @@ const postVerifyBookAppointmentService = async (data) => {
             }
         }
         else {
-            console.log('>>> check token: ', data.token);
-            console.log('>>> check doctorId: ', data.doctorId);
             let appointment = await db.Booking.findOne({
                 where: {
                     doctorId: data.doctorId,

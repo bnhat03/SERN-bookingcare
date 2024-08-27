@@ -21,3 +21,6 @@
 
 # Model: booking
     npx sequelize-cli model:generate --name Booking --attributes statusId:String, doctorId:Integer, patientId:Integer, date:String, timeType:String, token:String
+
+# Model: Specialty
+    npx sequelize-cli model:generate --name Specialty --attributes image:blob, name:string, descriptionHTML:text, descriptionMarkdown:text

@@ -6,6 +6,7 @@ import groupController from "../controller/groupController"
 import doctorController from "../controller/doctorController"
 import scheduleController from "../controller/scheduleController"
 import patientController from "../controller/patientController"
+import specialtyController from "../controller/specialtyController"
 
 import { checkUserJWT, checkUserPermission } from '../middleware/JWTAction'
 const router = express.Router();
@@ -34,7 +35,7 @@ const initApiRouters = (app) => {
     router.get("/doctor/get-all-doctors", doctorController.getAllDoctors);
     router.post("/doctor/save-infor-doctors", doctorController.postInforDoctor);
     router.get("/doctor/get-detail-doctor-by-id", doctorController.getDetailDoctorById);
-    router.get("/doctor/get-extra-infor-doctor-by-id", doctorController.getExtraInforDoctorById); 
+    router.get("/doctor/get-extra-infor-doctor-by-id", doctorController.getExtraInforDoctorById);
     router.get("/doctor/get-profile-doctor-by-id", doctorController.getProfileDoctorById);
 
     // Schedule
@@ -44,6 +45,9 @@ const initApiRouters = (app) => {
     // Patient
     router.post("/patient/patient-book-appointment", patientController.postBookAppointment);
     router.post("/patient/verify-book-appointment", patientController.postVerifyBookAppointment); // Client nhấn vô link ở email
+
+    // Specialty
+    router.post("/specialty/create-new-specialty", specialtyController.createNewSpecialty);
 
     app.use("/api/v1/", router);
 }
