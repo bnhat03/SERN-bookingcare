@@ -65,13 +65,32 @@ const getAllDoctors = async () => {
         }
     }
 }
+
+let checkRequiredFields = (inputData) => { // validate các trường đầu vào
+    let arrFields = ['doctorId', 'contentHTML', 'contentMarkdown', 'action',
+        'selectedPrice', 'selectedPayment', 'selectedProvince',
+        'nameClinic', 'addressClinic', 'note', 'specialtyId'];
+    let isValid = true;
+    let element = '';
+    for (let i = 0; i < arrFields.length; i++) {
+        if (!inputData[arrFields[i]]) {
+            isValid = false;
+            element = arrFields[i];
+            break;
+        }
+    }
+    return {
+        isValid, element
+    }
+}
+
+
 const saveDetailInforDoctor = async (inputDataMd) => { // create data markdown & HTML doctor
     try {
-        if (!inputDataMd || !inputDataMd.doctorId || !inputDataMd.contentHTML || !inputDataMd.contentMarkdown || !inputDataMd.action
-            || !inputDataMd.selectedPrice || !inputDataMd.selectedPayment || !inputDataMd.selectedProvince ||
-            !inputDataMd.nameClinic || !inputDataMd.addressClinic || !inputDataMd.note) {
+        let objCheckValid = checkRequiredFields(inputDataMd);
+        if (objCheckValid.isValid === false) {
             return {
-                EM: 'Missing params!',
+                EM: `Missing parameter: ${objCheckValid.element}!`, // Sử dụng function trên => Lấy được field empty
                 EC: 1,
                 DT: [],
             }
@@ -113,6 +132,8 @@ const saveDetailInforDoctor = async (inputDataMd) => { // create data markdown &
                 doctorInfor.nameClinic = inputDataMd.nameClinic;
                 doctorInfor.addressClinic = inputDataMd.addressClinic;
                 doctorInfor.note = inputDataMd.note;
+                doctorInfor.specialtyId = inputDataMd.specialtyId;
+                doctorInfor.clinicId = inputDataMd.clinicId;
                 await doctorInfor.save();
             }
             else { // create
