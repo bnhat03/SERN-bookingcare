@@ -124,6 +124,15 @@ const postVerifyBookingAppointment = (data) => { // Nhấn link trong email
         }
     });
 }
+const createNewSpecialty = (data) => {
+    return axios({
+        method: 'post',
+        url: '/api/v1/specialty/create-new-specialty',
+        data: {
+            ...data
+        }
+    });
+}
 
 export {
     handleLoginAPI,
@@ -142,7 +151,8 @@ export {
     getProfileDoctorById,
     postPatientBookAppointment,
     postVerifyBookingAppointment,
-    
+    createNewSpecialty,
+
 }
 
 
