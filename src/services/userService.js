@@ -133,6 +133,12 @@ const createNewSpecialty = (data) => {
         }
     });
 }
+const getAllSpecialty = () => {
+    return axios({
+        method: 'get',
+        url: `/api/v1/specialty/get-specialty`
+    });
+}
 
 export {
     handleLoginAPI,
@@ -152,6 +158,7 @@ export {
     postPatientBookAppointment,
     postVerifyBookingAppointment,
     createNewSpecialty,
+    getAllSpecialty,
 
 }
 
