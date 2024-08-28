@@ -109,7 +109,23 @@ const getProfileDoctorById = async (req, res) => {
         })
     }
 }
-
+const getListPatientForDoctor = async (req, res) => {
+    try {
+        let infor = await doctorAPIService.getListPatientForDoctor(req.query.doctorId, req.query.date);
+        return res.status(200).json({
+            EM: infor.EM,
+            EC: infor.EC,
+            DT: infor.DT
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            EM: 'error from server',
+            EC: '-1',
+            DT: ''
+        })
+    }
+}
 
 module.exports = {
     getTopDoctorHome,
@@ -118,5 +134,6 @@ module.exports = {
     getDetailDoctorById,
     getExtraInforDoctorById,
     getProfileDoctorById,
+    getListPatientForDoctor,
 
 }

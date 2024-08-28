@@ -104,7 +104,6 @@ let getDetailClinicById = async (inputId) => {
         }
     }
 }
-
 module.exports = {
     createNewClinic,
     getAllClinics,

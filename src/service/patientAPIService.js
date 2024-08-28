@@ -10,7 +10,7 @@ let buildUrlEmail = (doctorId, token) => {
 }
 const postBookAppointmentService = async (data) => {
     try {
-        if (!data || !data.email || !data.doctorId || !data.timeType || !data.date || !data.fullName) {
+        if (!data || !data.email || !data.doctorId || !data.timeType || !data.date || !data.fullName || !data.selectedGender || !data.address) {
             return {
                 EM: 'Missing params!',
                 EC: 1,
@@ -34,7 +34,10 @@ const postBookAppointmentService = async (data) => {
                 where: { email: data.email },
                 defaults: {
                     email: data.email,
-                    roleId: 'R3'
+                    roleId: 'R3',
+                    gender: data.selectedGender,
+                    address: data.address,
+                    firstName: data.fullName
                 }
             })
             if (user && user[0]) { // create a booking record

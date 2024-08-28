@@ -318,6 +318,51 @@ let getProfileDoctorByIdService = async (inputId) => { // inputId: doctorId
     }
 }
 
+let getListPatientForDoctor = async (doctorId, date) => { // inputId: doctorId
+    try {
+        if (!inputId || !date) {
+            return {
+                EM: 'Missing required parameter!',
+                EC: 1,
+                DT: [],
+            }
+        }
+        else {
+            let data = await db.Booking.findAll({
+                where: {
+                    roleId: 'R2',
+                    doctorId: doctorId,
+                    date: date
+                },
+                include: [
+                    {
+                        model: db.User, as:'patientData',
+                        attributes: ['email', 'firstName', 'lastName', 'address', 'gender'],
+                        include: [ 
+                            { model: db.AllCode, as: 'genderData', attributes: ['valueEn', 'valueVi'] },
+                        ],
+                    }
+
+                ],
+                raw: false, // Giữ nguyên sequelize object
+                nest: true
+            })
+            return {
+                EM: 'Get all roles successfully!',
+                EC: 0,
+                DT: data
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        return {
+            EM: 'something wrongs with service!',
+            EC: 1,
+            DT: []
+        }
+    }
+}
+
 
 module.exports = {
     getTopDoctorHome,
@@ -326,5 +371,6 @@ module.exports = {
     getDetailDoctorById,
     getExtraInforDoctorByIdService,
     getProfileDoctorByIdService,
+    getListPatientForDoctor,
 
 }
