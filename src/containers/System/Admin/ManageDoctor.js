@@ -257,7 +257,7 @@ class ManageDoctor extends Component {
                 listPrice: dataSelectPrice,
                 listPayment: dataSelectPayment,
                 listProvince: dataSelectProvince,
-                listSpecialty: dataSelectProvince
+                listSpecialty: dataSelectSpecialty
             })
         }
         if (prevProps.language !== this.props.language) { // Thay đổi option select của 4 cái 
