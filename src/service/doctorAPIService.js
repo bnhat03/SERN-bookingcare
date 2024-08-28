@@ -320,7 +320,7 @@ let getProfileDoctorByIdService = async (inputId) => { // inputId: doctorId
 
 let getListPatientForDoctor = async (doctorId, date) => { // inputId: doctorId
     try {
-        if (!inputId || !date) {
+        if (!doctorId || !date) {
             return {
                 EM: 'Missing required parameter!',
                 EC: 1,
@@ -330,19 +330,19 @@ let getListPatientForDoctor = async (doctorId, date) => { // inputId: doctorId
         else {
             let data = await db.Booking.findAll({
                 where: {
-                    roleId: 'R2',
+                    statusId: 'S2',
                     doctorId: doctorId,
                     date: date
                 },
                 include: [
                     {
-                        model: db.User, as:'patientData',
+                        model: db.User, as: 'patientData',
                         attributes: ['email', 'firstName', 'lastName', 'address', 'gender'],
-                        include: [ 
+                        include: [
                             { model: db.AllCode, as: 'genderData', attributes: ['valueEn', 'valueVi'] },
                         ],
-                    }
-
+                    },
+                    { model: db.AllCode, as: 'timeTypeDataPatient', attributes: ['valueEn', 'valueVi'] }, // PK
                 ],
                 raw: false, // Giữ nguyên sequelize object
                 nest: true
