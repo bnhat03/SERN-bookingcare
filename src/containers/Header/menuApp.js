@@ -53,6 +53,9 @@ export const doctorMenu = [
             { // Quản lý lịch khám bệnh của bác sĩ => Admin + Doctor có chức năng ni
                 name: 'menu.doctor.manage-schedule', link: '/doctor/manage-schedule' 
             }, 
+            { 
+                name: 'menu.doctor.manage-patient', link: '/doctor/manage-patient' 
+            }, 
                 
         ]
     }, 
