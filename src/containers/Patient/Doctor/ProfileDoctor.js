@@ -7,7 +7,7 @@ import { LANGUAGES, CRUD_ACTIONS, dateFormat } from '../../../utils';
 import { NumericFormat } from 'react-number-format';
 import _ from 'lodash'
 import moment from 'moment';
-
+import { Link } from 'react-router-dom';
 
 class ProfileDoctor extends Component {
     constructor(props) {
@@ -56,16 +56,16 @@ class ProfileDoctor extends Component {
 
         }
         if (prevProps.doctorId !== this.props.doctorId) {
-            // let data = await this.getInforDoctor(this.props.doctorId);
-            // this.setState({
-            //     dataProfile: data
-            // })
+            let data = await this.getInforDoctor(this.props.doctorId);
+            this.setState({
+                dataProfile: data
+            })
         }
     }
 
     render() {
         let { dataProfile } = this.state;
-        let { language, isShowDescriptionDoctor, dataTime } = this.props;
+        let { language, isShowDescriptionDoctor, dataTime, isShowPrice, isShowLinkDetail, doctorId } = this.props;
         // isShowDescriptionDoctor: Chọn hiển thị thông tin chi tiết Doctor hoặc TG booking
         let nameVi = '', nameEn = '';
         if (dataProfile && dataProfile.positionData) {
@@ -115,29 +115,42 @@ class ProfileDoctor extends Component {
                         </div>
 
                     </div>
-                    <div className='price'>
-                        <FormattedMessage id='patient.booking-modal.price' />
-                        { // Giá khám => VN
-                            dataProfile && dataProfile.Doctor_Infor && language === LANGUAGES.VI &&
-                            <NumericFormat
-                                className='currency'
-                                value={dataProfile.Doctor_Infor.priceTypeData.valueVi}
-                                thousandSeparator={true}
-                                displayType={'text'}
-                                suffix={" VNĐ"}
-                            />
-                        }
-                        { // Giá khám => EN
-                            dataProfile && dataProfile.Doctor_Infor && language === LANGUAGES.EN &&
-                            <NumericFormat
-                                className='currency'
-                                value={dataProfile.Doctor_Infor.priceTypeData.valueEn}
-                                thousandSeparator={true}
-                                displayType={'text'}
-                                suffix={" $"}
-                            />
-                        }
-                    </div>
+
+                    {
+                        isShowLinkDetail === true &&
+                        <div className='view-detail-doctor'>
+                            <Link to={`/detail-doctor/${doctorId}`}>Xem thêm</Link>
+                        </div>
+                    }
+                    {
+                        isShowPrice === true &&
+                        <div className='price'>
+                            <FormattedMessage id='patient.booking-modal.price' />
+                            { // Giá khám => VN
+                                dataProfile && dataProfile.Doctor_Infor && language === LANGUAGES.VI &&
+                                <NumericFormat
+                                    className='currency'
+                                    value={dataProfile.Doctor_Infor.priceTypeData.valueVi}
+                                    thousandSeparator={true}
+                                    displayType={'text'}
+                                    suffix={" VNĐ"}
+                                />
+                            }
+                            { // Giá khám => EN
+                                dataProfile && dataProfile.Doctor_Infor && language === LANGUAGES.EN &&
+                                <NumericFormat
+                                    className='currency'
+                                    value={dataProfile.Doctor_Infor.priceTypeData.valueEn}
+                                    thousandSeparator={true}
+                                    displayType={'text'}
+                                    suffix={" $"}
+                                />
+                            }
+                        </div>
+                    }
+
+
+
                 </div>
             </>
         );

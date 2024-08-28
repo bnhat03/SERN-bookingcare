@@ -90,8 +90,15 @@ class DoctorSchedule extends Component {
         let allDays = this.getArrayDays(language);
         this.setState({
             allDays: allDays,
-
         })
+
+        // Hiển thị list btns ngay khi mở một Detail Specialty/Clinic
+        if (this.props.doctorIdFromParent ) {
+            let res = await getScheduleDoctorByDate(this.props.doctorIdFromParent, allDays[0].value);
+            this.setState({
+                allAvailableTime: res.DT ? res.DT : []
+            })
+        }
     }
     async componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps.language !== this.props.language) {
