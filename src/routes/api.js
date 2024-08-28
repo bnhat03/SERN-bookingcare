@@ -53,8 +53,8 @@ const initApiRouters = (app) => {
 
     // Clinic
     router.post("/clinic/create-new-clinic", clinicController.createNewClinic);
-    // router.get("/clinic/get-clinic", clinicController.getAllSpecialties);
-    // router.get("/clinic/get-detail-clinic-by-id", clinicController.getDetailClinicById);
+    router.get("/clinic/get-clinic", clinicController.getAllClinics);
+    router.get("/clinic/get-detail-clinic-by-id", clinicController.getDetailClinicById);
 
     app.use("/api/v1/", router);
 }

@@ -38,18 +38,18 @@ const createNewClinic = async (data) => {
         }
     }
 }
-const getAllSpecialties = async () => {
+const getAllClinics = async () => {
     try {
-        let specialties = await db.Clinic.findAll({});
-        if (specialties && specialties.length > 0) {
-            specialties.map(item => {
+        let clinics = await db.Clinic.findAll({});
+        if (clinics && clinics.length > 0) {
+            clinics.map(item => {
                 item.image = Buffer(item.image, 'base64').toString('binary');  // convert image (BLOB => Buffer) trước khi gửi sang React (base64)
             })
         }
         return {
-            EM: 'Get all specialties successfully!',
+            EM: 'Get all clinics successfully!',
             EC: 0,
-            DT: specialties
+            DT: clinics
         }
 
     } catch (error) {
@@ -61,10 +61,9 @@ const getAllSpecialties = async () => {
         }
     }
 }
-let getDetailClinicById = async (inputId, location) => {
+let getDetailClinicById = async (inputId) => {
     try {
-        console.log('>>> check detail inputId', inputId);
-        if (!inputId || !location) {
+        if (!inputId) {
             return {
                 EM: 'Missing required parameter!',
                 EC: 1,
@@ -73,36 +72,20 @@ let getDetailClinicById = async (inputId, location) => {
         }
 
         else {
-            console.log('>>> check detail inputId', inputId);
             let data = await db.Clinic.findOne({
                 where: {
                     id: inputId
                 },
-                attributes: ['descriptionHTML', 'descriptionMarkdown'],
+                attributes: ['name', 'address', 'descriptionHTML', 'descriptionMarkdown'],
                 raw: true
             })
             if (data) {
                 let doctorClinic = [];
-                if (location === 'ALL') {
-                    doctorClinic = await db.Doctor_Infor.findAll({
-                        where: { clinicId: inputId },
-                        attributes: ['doctorId', 'provinceId'],
-                        raw: true
-                    })
-
-                    // console.log('>>> check detail doctorClinic', doctorClinic);
-                }
-                else {
-                    doctorClinic = await db.Doctor_Infor.findAll({
-                        where: {
-                            clinicId: inputId,
-                            provinceId: location
-                        },
-                        attributes: ['doctorId', 'provinceId'],
-                        raw: true,
-
-                    })
-                }
+                doctorClinic = await db.Doctor_Infor.findAll({
+                    where: { clinicId: inputId },
+                    attributes: ['doctorId', 'provinceId'],
+                    raw: true
+                })
                 data.doctorClinic = doctorClinic;
             }
             else data = {};
@@ -124,7 +107,7 @@ let getDetailClinicById = async (inputId, location) => {
 
 module.exports = {
     createNewClinic,
-    // getAllSpecialties,
-    // getDetailClinicById,
+    getAllClinics,
+    getDetailClinicById,
 
 }

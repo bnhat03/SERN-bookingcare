@@ -17,9 +17,9 @@ let createNewClinic = async (req, res) => {
         })
     }
 }
-const getAllSpecialties = async (req, res) => {
+const getAllClinics = async (req, res) => {
     try {
-        let data = await clinicService.getAllSpecialties();
+        let data = await clinicService.getAllClinics();
         return res.status(200).json({
             EM: data.EM,
             EC: data.EC,
@@ -37,7 +37,7 @@ const getAllSpecialties = async (req, res) => {
 
 const getDetailClinicById = async (req, res) => {
     try {
-        let infor = await clinicService.getDetailClinicById(req.query.id, req.query.location);
+        let infor = await clinicService.getDetailClinicById(req.query.id);
         return res.status(200).json({
             EM: infor.EM,
             EC: infor.EC,
@@ -55,7 +55,7 @@ const getDetailClinicById = async (req, res) => {
 
 module.exports = {
     createNewClinic,
-    // getAllSpecialties,
-    // getDetailClinicById,
+    getAllClinics,
+    getDetailClinicById,
 
 }
