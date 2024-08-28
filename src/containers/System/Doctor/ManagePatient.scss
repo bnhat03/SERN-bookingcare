@@ -1,3 +1,15 @@
+.overlay-loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5); /* Màu nền đen với độ mờ */
+    z-index: 9999; /* Đảm bảo overlay nằm trên cùng */
+}
 .manage-patient-container{
     .m-p-title {
         text-transform: uppercase;

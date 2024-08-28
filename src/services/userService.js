@@ -177,6 +177,15 @@ const getAllDetailClinicById = (obj) => {
     });
 }
 
+const postSendRemedy = (data) => {  // Gửi hóa đơn về email sau khi xác nhận ở bác sĩ
+    return axios({
+        method: 'post',
+        url: '/api/v1/doctor/send-remedy',
+        data: {
+            ...data
+        }
+    });
+}
 
 export {
     handleLoginAPI,
@@ -202,6 +211,7 @@ export {
     getAllClinic,
     getAllDetailClinicById,
     getAllPatientForDoctor,
-    
+    postSendRemedy,
+
 }
 
