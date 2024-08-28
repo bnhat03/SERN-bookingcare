@@ -97,7 +97,7 @@ class ManageDoctor extends Component {
         // select: PRICE, PAYMENT, PROVINCE
         // input: introduce, nameClinic, addressClinic, note, markdown
         this.setState({ selectedOption }); // selectedOption: Doctor
-        let { listPayment, listPrice, listProvince, listSpecialty } = this.state;
+        let { listPayment, listPrice, listProvince, listSpecialty, listClinic } = this.state;
 
         let res = await getDetailInforDoctorService(selectedOption.value); // doctorId
         if (res && res.EC === 0 && res.DT && res.DT.Markdown) { // Doctor đã có infor trong db Markdown => Edit
@@ -108,10 +108,12 @@ class ManageDoctor extends Component {
                 selectedPayment = {},
                 selectedProvince = {},
                 selectedSpecialty = {},
+                selectedClinic = {},
                 paymentId = '',
                 priceId = '',
                 provinceId = '',
                 specialtyId = '',
+                clinicId = '',
                 nameClinic = '',
                 addressClinic = '',
                 note = '';
@@ -122,7 +124,8 @@ class ManageDoctor extends Component {
                 priceId = res.DT.Doctor_Infor.priceId; // keyMap
                 paymentId = res.DT.Doctor_Infor.paymentId; // keyMap
                 provinceId = res.DT.Doctor_Infor.provinceId; // keyMap
-                specialtyId = res.DT.Doctor_Infor.specialtyId
+                specialtyId = res.DT.Doctor_Infor.specialtyId;
+                clinicId = res.DT.Doctor_Infor.clinicId;
 
                 selectedPrice = listPrice.find(item => { // Tìm option (object) đang chọn của select Price
                     return item && item.value === priceId
@@ -136,6 +139,9 @@ class ManageDoctor extends Component {
                 selectedSpecialty = listSpecialty.find(item => { // Tìm option (object) đang chọn của select Specialty
                     return item && item.value === specialtyId
                 })
+                selectedClinic = listClinic.find(item => { // Tìm option (object) đang chọn của select Specialty
+                    return item && item.value === clinicId
+                })
             }
 
             this.setState({
@@ -148,6 +154,7 @@ class ManageDoctor extends Component {
                 selectedPayment: selectedPayment,
                 selectedProvince: selectedProvince,
                 selectedSpecialty: selectedSpecialty,
+                selectedClinic: selectedClinic,
                 nameClinic: nameClinic,
                 addressClinic: addressClinic,
                 note: note,
@@ -166,7 +173,8 @@ class ManageDoctor extends Component {
                 selectedPrice: {},
                 selectedPayment: {},
                 selectedProvince: {},
-                selectedSpecialty: {}
+                selectedSpecialty: {},
+                selectedClinic: {}
             })
         }
     };
@@ -218,6 +226,14 @@ class ManageDoctor extends Component {
                     result.push(obj);
                 })
             }
+            if (type === 'CLINIC') {
+                inputData.map((item, index) => {
+                    let obj = {};
+                    obj.label = item.name;
+                    obj.value = item.id;
+                    result.push(obj);
+                })
+            }
         }
         return result;
     }
@@ -251,7 +267,7 @@ class ManageDoctor extends Component {
         }
 
         if (prevProps.allRequiredDoctorInfor !== this.props.allRequiredDoctorInfor) { // Thay đổi option select của 3 cái: PRICE, PAYMENT, PROVINCE 
-            let { resPayment, resPrice, resProvince, resSpecialty } = this.props.allRequiredDoctorInfor;
+            let { resPayment, resPrice, resProvince, resSpecialty, resClinic } = this.props.allRequiredDoctorInfor;
             // console.log(">>> check resPrice" , resPrice);
             // console.log(">>> check resPayment" , resPayment);
             // console.log(">>> check resProvince" , resProvince);
@@ -259,12 +275,14 @@ class ManageDoctor extends Component {
             let dataSelectPayment = this.buildDataInputSelect(resPayment, 'PAYMENT');
             let dataSelectProvince = this.buildDataInputSelect(resProvince, 'PROVINCE');
             let dataSelectSpecialty = this.buildDataInputSelect(resSpecialty, 'SPECIALTY');
+            let dataSelectClinic = this.buildDataInputSelect(resClinic, 'CLINIC');
 
             this.setState({
                 listPrice: dataSelectPrice,
                 listPayment: dataSelectPayment,
                 listProvince: dataSelectProvince,
-                listSpecialty: dataSelectSpecialty
+                listSpecialty: dataSelectSpecialty,
+                listClinic: dataSelectClinic
             })
         }
         if (prevProps.language !== this.props.language) { // Thay đổi option select của 4 cái 

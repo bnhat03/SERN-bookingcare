@@ -158,6 +158,18 @@ const createNewClinic = (data) => {
         }
     });
 }
+const getAllClinic = (obj) => {
+    return axios({
+        method: 'get',
+        url: `/api/v1/clinic/get-clinic`
+    });
+}
+const getAllDetailClinicById = (obj) => {
+    return axios({
+        method: 'get',
+        url: `/api/v1/clinic/get-detail-clinic-by-id?id=${obj.id}`
+    });
+}
 export {
     handleLoginAPI,
     getAllCodesService,
@@ -179,7 +191,8 @@ export {
     getAllSpecialty,
     getAllDetailSpecialtyById,
     createNewClinic,
-    
+    getAllClinic,
+    getAllDetailClinicById,
 
 }
 
