@@ -77,6 +77,12 @@ const getDetailInforDoctorService = (inputId) => { // id doctor
         url: `/api/v1/doctor/get-detail-doctor-by-id?id=${inputId}`
     });
 }
+const getAllPatientForDoctor = (data) => { // id doctor
+    return axios({
+        method: 'get',
+        url: `/api/v1/doctor/get-list-patient-for-doctor?doctorId=${data.doctorId}&date=${data.date}`
+    });
+}
 // Schedule
 const saveBulkScheduleDoctor = (dataSchedule) => { // id doctor
     return axios({
@@ -170,6 +176,8 @@ const getAllDetailClinicById = (obj) => {
         url: `/api/v1/clinic/get-detail-clinic-by-id?id=${obj.id}`
     });
 }
+
+
 export {
     handleLoginAPI,
     getAllCodesService,
@@ -193,6 +201,7 @@ export {
     createNewClinic,
     getAllClinic,
     getAllDetailClinicById,
-
+    getAllPatientForDoctor,
+    
 }
 
