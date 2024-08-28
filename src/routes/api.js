@@ -38,6 +38,7 @@ const initApiRouters = (app) => {
     router.get("/doctor/get-extra-infor-doctor-by-id", doctorController.getExtraInforDoctorById);
     router.get("/doctor/get-profile-doctor-by-id", doctorController.getProfileDoctorById);
     router.get("/doctor/get-list-patient-for-doctor", doctorController.getListPatientForDoctor);
+    router.post("/doctor/send-remedy", doctorController.sendRemedy);
 
     // Schedule
     router.post("/schedule/bulk-create-schedule", scheduleController.bulkCreateSchedule);

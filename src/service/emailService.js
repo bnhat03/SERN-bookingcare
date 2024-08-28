@@ -29,6 +29,26 @@ let getBodyHTMLEmail = (dataSend) => {
     }
     return result;
 }
+let getBodyHTMLEmailRemedy = (dataSend) => {
+    let result = '';
+    if (dataSend.language === 'vi') {
+        result = `
+            <h3>Xin chào ${dataSend.patientName}!</h3>
+            <p>Bạn nhận được email này vì đã đặt lịch khám bệnh online trên Biện Nhật channel.</p>
+            <p>Thông tin hóa đơn/đơn thuốc được gửi trong file đính kèm nha cưng!</p>
+            <div> Xin chân thành cảm ơn </div>
+        `;
+    }
+    else if (dataSend.language === 'en') {
+        result = `
+            <h3>Dear ${dataSend.patientName}!</h3>
+            <p>You received this email because you booked an online medical appointment on Biện Nhật channel.</p>
+            <p>Hihi</p>
+            <div> Sincerely thank! </div>
+        `;
+    }
+    return result;
+}
 
 let sendSimpleEmail = async (dataSend) => {
     let transporter = nodemailer.createTransport({
@@ -49,7 +69,34 @@ let sendSimpleEmail = async (dataSend) => {
     });
 
 }
+let sendAttachment = async (dataSend) => {
+    let transporter = nodemailer.createTransport({
+        host: "smtp.gmail.com",
+        port: 587,
+        secure: false, // Use `true` for port 465, `false` for all other ports
+        auth: {
+            user: process.env.EMAIL_APP, // email send
+            pass: process.env.EMAIL_APP_PASSWORD,
+        },
+    });
+
+    let info = await transporter.sendMail({
+        from: `"Bien Nhat deptrai" ${process.env.EMAIL_APP}`, // sender address
+        to: "nhatbien2003@gmail.com", // email receive => dataSend.receiverEmail
+        subject: "Kết quả đặt lịch khám bệnh", // Subject line
+        html: getBodyHTMLEmailRemedy(dataSend),
+        attachments: [
+            {
+                filename: `remedy-${dataSend.patientId}-${new Date().getTime()}.png`,
+                content: dataSend.imgBase64.split("base64,")[1],
+                encoding: 'base64'
+            }
+        ]
+    });
+
+}
 module.exports = {
     sendSimpleEmail,
+    sendAttachment,
 
 }

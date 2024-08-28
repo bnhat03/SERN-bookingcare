@@ -2,6 +2,8 @@
 import db from "../models";
 import { Buffer } from 'buffer';
 import _, { includes } from 'lodash'
+import emailService from './emailService'
+
 const getTopDoctorHome = async (limitInput) => { // Lấy list limit Doctor tạo sau cùng
     try {
         let doctors = await db.User.findAll({
@@ -362,7 +364,48 @@ let getListPatientForDoctor = async (doctorId, date) => { // inputId: doctorId
         }
     }
 }
+const sendRemedy = async (data) => {
+    try {
+        console.log(">>> check data", data);
+        if (!data.email || !data.doctorId || !data.patientId || !data.timeType || !data.imgBase64) {
+            return {
+                EM: `Missing parameter!`,
+                EC: 1,
+                DT: [],
+            }
+        }
+        else {
+            let appointment = await db.Booking.findOne({
+                where: { 
+                    doctorId: data.doctorId,
+                    patientId: data.patientId,
+                    timeType: data.timeType,
+                    statusId: 'S2'
 
+                },
+                raw: false,
+            })
+            if (appointment) {
+                appointment.statusId = 'S3';
+                await appointment.save();
+            }
+            await emailService.sendAttachment(data);
+
+            return {
+                EM: 'Ok nha',
+                EC: 0,
+                DT: ''
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        return {
+            EM: 'something wrongs with service!',
+            EC: -1,
+            DT: []
+        }
+    }
+}
 
 module.exports = {
     getTopDoctorHome,
@@ -372,5 +415,6 @@ module.exports = {
     getExtraInforDoctorByIdService,
     getProfileDoctorByIdService,
     getListPatientForDoctor,
+    sendRemedy,
 
 }
