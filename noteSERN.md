@@ -24,3 +24,6 @@
 
 # Model: Specialty
     npx sequelize-cli model:generate --name Specialty --attributes image:blob, name:string, descriptionHTML:text, descriptionMarkdown:text
+
+# Model: Clinic
+    npx sequelize-cli model:generate --name Clinic --attributes address:string, name:string, descriptionHTML:text, descriptionMarkdown:text, image:blob

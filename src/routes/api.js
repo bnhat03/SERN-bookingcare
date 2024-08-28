@@ -7,8 +7,8 @@ import doctorController from "../controller/doctorController"
 import scheduleController from "../controller/scheduleController"
 import patientController from "../controller/patientController"
 import specialtyController from "../controller/specialtyController"
+import clinicController from "../controller/clinicController"
 
-import { checkUserJWT, checkUserPermission } from '../middleware/JWTAction'
 const router = express.Router();
 
 const initApiRouters = (app) => {
@@ -50,6 +50,11 @@ const initApiRouters = (app) => {
     router.post("/specialty/create-new-specialty", specialtyController.createNewSpecialty);
     router.get("/specialty/get-specialty", specialtyController.getAllSpecialties);
     router.get("/specialty/get-detail-specialty-by-id", specialtyController.getDetailSpecialtyById);
+
+    // Clinic
+    router.post("/clinic/create-new-clinic", clinicController.createNewClinic);
+    // router.get("/clinic/get-clinic", clinicController.getAllSpecialties);
+    // router.get("/clinic/get-detail-clinic-by-id", clinicController.getDetailClinicById);
 
     app.use("/api/v1/", router);
 }
