@@ -124,6 +124,8 @@ const postVerifyBookingAppointment = (data) => { // Nhấn link trong email
         }
     });
 }
+
+// Specialty
 const createNewSpecialty = (data) => {
     return axios({
         method: 'post',
@@ -143,6 +145,17 @@ const getAllDetailSpecialtyById = (obj) => {
     return axios({
         method: 'get',
         url: `/api/v1/specialty/get-detail-specialty-by-id?id=${obj.id}&location=${obj.location}`
+    });
+}
+
+// Clinic
+const createNewClinic = (data) => {
+    return axios({
+        method: 'post',
+        url: '/api/v1/clinic/create-new-clinic',
+        data: {
+            ...data
+        }
     });
 }
 export {
@@ -165,6 +178,8 @@ export {
     createNewSpecialty,
     getAllSpecialty,
     getAllDetailSpecialtyById,
+    createNewClinic,
+    
 
 }
 
